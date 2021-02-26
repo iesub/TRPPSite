@@ -87,68 +87,9 @@ header{
 	border-color: black;
 }                          /*тут заканчивается блок с основным, и начинается уникальщина*/
 
-.main-part{
+.friends-news{
 	padding-left: 5%;
 	width: 50%;
-}
-
-.client-inf{
-	display: flex;
-}
-
-.avatar-change{
-	display:flex;
-	flex-direction: column;
-	align-items: center;
-	background-color: white;
-	border-radius: 10px;
-	padding: 10px;
-}
-
-.avatar-change img{
-	height:200px;
-}
-
-.avatar-change p{
-	border: 2px solid black;
-	border-radius: 5px;
-	padding: 2px;
-	cursor: pointer;
-}
-
-.avatar-change p:hover{
-	background-color: #c3ccd3;
-}
-
-.information-block{
-	margin-left: 20px;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	background-color: white;
-	padding: 10px;
-	border-radius: 10px;
-}
-
-.information-block h3{
-	text-align: center;
-}
-
-.change-information{
-	border: 2px solid black;
-	border-radius: 5px;
-	padding: 2px;
-	cursor: pointer;
-	width: 130px;
-	text-align: center;
-}
-
-.change-information:hover{
-	background-color: #c3ccd3;
-}
-
-.client-news{
-	margin-top: 10px;
 }
 
 .note {
@@ -158,7 +99,19 @@ header{
 	margin-top: 10px;
 }
 
-.note img{
+.news-origin{
+	display:flex;
+}
+
+.news-origin p{
+	margin-left: 5px;
+}
+
+.news-origin img{
+	height: 50px;
+}
+
+.note-img-box img{
 	height: 150px;
 }
 
