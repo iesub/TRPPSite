@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Список друзей:</h1>
+    {% for follower in followers %}
+        <table>
+            <tr valign="top">
+                <td><img src="{{ follower.avatar(36) }}"></td>
+                <td><p>{{ follower.username }}</p></td>
+                <td><a href="{{ url_for('unfollow', username=follower.username) }}">Удалить из списка друзей</a></td>
+            </tr>
+        </table>
+    {% endfor %}
+    {% for follower in followed %}
+        <table>
+            <tr valign="top">
+                <td><img src="{{ follower.avatar(36) }}"></td>
+                <td><p>{{ follower.username }}</p></td>
+                <td><a href="{{ url_for('unfollow', username=follower.username) }}">Удалить из списка друзей</a></td>
+            </tr>
+        </table>
+    {% endfor %}
+{% endblock %}

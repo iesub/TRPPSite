@@ -5,7 +5,7 @@ from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, CreateChatForm, SearchChatForm, SearchUserForm, \
     PostForm
 from flask_login import current_user, login_user
-from app.models import User, Chat, Post
+from app.models import User, Chat, Post, Invitation
 from flask_login import logout_user, login_required
 from datetime import datetime
 import pytz
@@ -22,7 +22,8 @@ def before_request():
 @app.route('/index')
 @login_required
 def index():
-    return render_template('index.html', title='Главная страница', chats=current_user.chats)
+    return render_template('index.html', title='Главная страница', chats=current_user.chats,
+                           invitations=current_user.invitations)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -76,14 +77,14 @@ def user(username):
 @login_required
 def chat(name):
     form = PostForm()
-    chat = Chat.query.filter_by(name = name).first()
+    chat = Chat.query.filter_by(name=name).first()
     if form.validate_on_submit():
         post = Post(body=form.post.data, author=current_user, chat=chat)
         db.session.add(post)
         db.session.commit()
-        return redirect(url_for('chat', name = chat.name))
+        return redirect(url_for('chat', name=chat.name))
     posts = chat.posts
-    return render_template("chat.html", title='Home Page', form=form, chat = chat,
+    return render_template("chat.html", title='Home Page', form=form, chat=chat,
                            posts=posts)
 
 
@@ -150,3 +151,86 @@ def search_user():
         flash('Поздравляю, вы присоединились к беседе!')
         return redirect(url_for('index'))
     return render_template('search_user.html', title='Поиск беседы', form=form)
+
+
+@app.route('/invite_user/<name>', methods=['GET', 'POST'])
+@login_required
+def invite_user(name):
+    form = SearchUserForm()
+    chat = Chat.query.filter_by(name=name).first()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None:
+            flash('извините, пользователя с таким именем не существует')
+            return redirect(url_for('search_user'))
+        invitation = Invitation()
+        invitation.user = user
+        invitation.chat = chat
+        db.session.add(invitation)
+        db.session.commit()
+        flash('Поздравляю, вы приглосили нового пользователя!')
+        return redirect(url_for('index'))
+    return render_template('search_user.html', title='Поиск беседы', form=form)
+
+
+@app.route('/accept_the_invitation/<invitation_id>')
+@login_required
+def accept_the_invitation(invitation_id):
+    invitation = Invitation.query.filter_by(id=int(invitation_id)).first()
+    current_user.chats.append(invitation.chat)
+    db.session.delete(invitation)
+    db.session.commit()
+    return redirect(url_for('index'))
+
+
+@app.route('/decline_the_invitation/<invitation_id>')
+@login_required
+def decline_the_invitation(invitation_id):
+    invitation = Invitation.query.filter_by(id=int(invitation_id)).first()
+    db.session.delete(invitation)
+    db.session.commit()
+    return redirect(url_for('index'))
+
+
+@app.route('/follow/<username>')
+@login_required
+def follow(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash('Пользователь {} не найден.'.format(username))
+        return redirect(url_for('index'))
+    if user == current_user:
+        flash('Вы не можете подружиться с самим собой')
+        return redirect(url_for('user', username=username))
+    current_user.follow(user)
+    db.session.commit()
+    return redirect(url_for('user', username=username))
+
+
+@app.route('/unfollow/<username>')
+@login_required
+def unfollow(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash('Пользователь {} не найден.'.format(username))
+        return redirect(url_for('index'))
+    if user == current_user:
+        flash('Вы не можете подружиться с самим собой.')
+        return redirect(url_for('user', username=username))
+    current_user.unfollow(user)
+    db.session.commit()
+    return redirect(url_for('user', username=username))
+
+
+@app.route('/list_of_friends')
+@login_required
+def list_of_friends():
+    users = User.query.all()
+    followers = []
+    followed = []
+    for user in users:
+        if user.is_following(current_user):
+            followers.append(user)
+        elif current_user.is_following(user):
+            followed.append(user)
+    return render_template('list_of_friends.html', title='Список друзей', followers=followers, followed=followed)

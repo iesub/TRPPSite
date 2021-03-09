@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f86c1b86-8f5c-4ea0-a6ba-c3368d50d967" name="Default Changelist" comment="" />
+    <list default="true" id="091ee528-9c61-47ce-9a5a-ac81283cc7af" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,7 +16,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectId" id="1oPw4ZudDzam1trxtUuhvq1Pw2K" />
+  <component name="ProjectId" id="1ohmaRPwX8ayDOH5ZpyiQEzuB2e" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -26,15 +26,16 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\User\PycharmProjects\chat\app" />
+      <recent name="C:\Users\User\PycharmProjects\Grave_chat\app" />
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="chat" type="Python.FlaskServer">
-      <module name="chat" />
+    <configuration name="Grave_chat" type="Python.FlaskServer">
+      <module name="Grave_chat" />
       <option name="target" value="$PROJECT_DIR$/app.py" />
       <option name="targetType" value="PATH" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -54,16 +55,21 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="f86c1b86-8f5c-4ea0-a6ba-c3368d50d967" name="Default Changelist" comment="" />
-      <created>1613201342537</created>
+      <changelist id="091ee528-9c61-47ce-9a5a-ac81283cc7af" name="Default Changelist" comment="" />
+      <created>1613747259851</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1613201342537</updated>
-      <workItem from="1613201437788" duration="61000" />
-      <workItem from="1613201522962" duration="17974000" />
-      <workItem from="1613293348529" duration="813000" />
-      <workItem from="1613382729511" duration="96000" />
-      <workItem from="1613393708547" duration="357000" />
+      <updated>1613747259851</updated>
+      <workItem from="1613747343949" duration="6230000" />
+      <workItem from="1613810971949" duration="4946000" />
+      <workItem from="1613904409654" duration="71000" />
+      <workItem from="1613910102651" duration="21000" />
+      <workItem from="1614246284088" duration="2399000" />
+      <workItem from="1614505794970" duration="668000" />
+      <workItem from="1614595860086" duration="9000" />
+      <workItem from="1614597302029" duration="538000" />
+      <workItem from="1614678514386" duration="133000" />
+      <workItem from="1614852960362" duration="1378000" />
     </task>
     <servers />
   </component>
@@ -71,28 +77,28 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1286" height="163" key="GridCell.Tab.0.bottom" timestamp="1613394065549">
+    <state width="1286" height="163" key="GridCell.Tab.0.bottom" timestamp="1614597840029">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1286" height="163" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1613394065549" />
-    <state width="1286" height="163" key="GridCell.Tab.0.center" timestamp="1613394065549">
+    <state width="1286" height="163" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1614597840029" />
+    <state width="1286" height="163" key="GridCell.Tab.0.center" timestamp="1614597840028">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1286" height="163" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1613394065549" />
-    <state width="1286" height="163" key="GridCell.Tab.0.left" timestamp="1613394065549">
+    <state width="1286" height="163" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1614597840028" />
+    <state width="1286" height="163" key="GridCell.Tab.0.left" timestamp="1614597840028">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1286" height="163" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1613394065549" />
-    <state width="1286" height="163" key="GridCell.Tab.0.right" timestamp="1613394065549">
+    <state width="1286" height="163" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1614597840028" />
+    <state width="1286" height="163" key="GridCell.Tab.0.right" timestamp="1614597840028">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1286" height="163" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1613394065549" />
-    <state x="393" y="179" key="com.intellij.ide.util.TipDialog" timestamp="1613382807365">
+    <state width="1286" height="163" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1614597840028" />
+    <state x="381" y="175" key="com.intellij.ide.util.TipDialog" timestamp="1615296388131">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="393" y="179" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1613382807365" />
+    <state x="381" y="175" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1615296388131" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/chat$chat.coverage" NAME="chat Coverage Results" MODIFIED="1613393711140" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Grave_chat$Grave_chat.coverage" NAME="Grave_chat Coverage Results" MODIFIED="1614597432003" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

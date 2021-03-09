@@ -18,6 +18,7 @@
             <a href="{{ url_for('create_chat') }}">Создать беседу</a>
             <a href="{{ url_for('search_chat') }}">Найти беседу</a>
             <a href="{{ url_for('search_user') }}">Найти пользователя</a>
+            <a href="{{ url_for('list_of_friends') }}">Список друзей</a>
         </div>
         <hr>
         {% with messages = get_flashed_messages() %}

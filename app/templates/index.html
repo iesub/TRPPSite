@@ -12,4 +12,12 @@
             <div><p><a href="{{ url_for('chat', name=chat.name) }}">{{ chat.users[0].username }}</a></p></div>
         {% endif %}
     {% endfor %}
+    <p>Вас приглашают в следующие чаты</p>
+        {% for invitation in invitations %}
+            <div>
+                <p>{{ invitation.chat.name }}</p>
+                <p><a href="{{ url_for('accept_the_invitation', invitation_id=invitation.id) }}">Принять пришлашение</a></p>
+                <p><a href="{{ url_for('decline_the_invitation', invitation_id=invitation.id) }}">Отклонить пришлашение</a></p>
+            </div>
+        {% endfor %}
 {% endblock %}

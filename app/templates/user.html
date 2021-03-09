@@ -10,6 +10,10 @@
                 {% if user.last_seen %}<p>В последний раз был онлайн: {{ user.last_seen }}</p>{% endif %}
                 {% if user == current_user %}
                     <p><a href="{{ url_for('edit_profile') }}">Изменить ваш профиль</a></p>
+                {% elif not current_user.is_following(user) %}
+                    <p><a href="{{ url_for('follow', username=user.username) }}">Добавить в друзья</a></p>
+                {% else %}
+                    <p><a href="{{ url_for('unfollow', username=user.username) }}">Удалить из списка друзей</a></p>
                 {% endif %}
             </td>
         </tr>
