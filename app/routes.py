@@ -22,8 +22,11 @@ def before_request():
 @app.route('/index')
 @login_required
 def index():
+    invite = Invitation.query.filter_by(user=current_user).first()
+    if invite is None:
+        return render_template('index.html', title='Главная страница', chats=current_user.chats, count=0)
     return render_template('index.html', title='Главная страница', chats=current_user.chats,
-                           invitations=current_user.invitations)
+                           invitations=current_user.invitations, count=1)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -70,7 +73,22 @@ def register():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     chats = user.chats
-    return render_template('user.html', user=user, chats=chats)
+    return render_template('user.html', user=user, chats=chats, title=user.username)
+
+
+@app.route('/write_message/<username>')
+@login_required
+def write_message(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    chat = Chat.query.filter_by(name='none'+user.username+current_user.username).first()
+    if chat is None:
+        chat = Chat.query.filter_by(name='none' + current_user.username + user.username).first()
+    if chat is None:
+        chat = Chat(name='none' + user.username + current_user.username)
+        chat.users.append(current_user)
+        chat.users.append(user)
+        db.session.commit()
+    return redirect(url_for('chat', name=chat.name))
 
 
 @app.route('/chat/<name>', methods= ['GET', 'Post'])
@@ -234,3 +252,9 @@ def list_of_friends():
         elif current_user.is_following(user):
             followed.append(user)
     return render_template('list_of_friends.html', title='Список друзей', followers=followers, followed=followed)
+
+
+@app.route('/news')
+@login_required
+def news():
+    return render_template('news.html', title='Новости')

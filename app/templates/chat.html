@@ -1,29 +1,41 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>{% if chat.name.find('none') == -1 %}
-            <div><p>{{ chat.name }}</p></div>
-        {% elif chat.users[0] == current_user %}
-            <div><p>{{ chat.users[1].username }}</p></div>
-        {% else %}
-            <div><p>{{ chat.users[0].username }}</p></div>
-        {% endif %}
-    </h1>
-    {% for post in posts %}
-        {% include '_post.html' %}
-    {% endfor %}
-    <form action="" method="post">
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.post.label }}<br>
-            {{ form.post(size=64) }}<br>
-            {% for error in form.post.errors %}
-            <span style="color: red;">[{{ error }}]</span>
+    <link rel="stylesheet" href="../static/messages.css" type="text/css"/>
+    <div class = "chat-instance">
+        <div class="chat-image">
+            <img src="../static/empty.jpg">
+        </div>
+        <div class="chat-inf">
+            <h4>{{ current_user.username }}/</h4>
+            <h4>
+                {% if chat.name.find('none') == -1 %}
+                    <div><p>{{ chat.name }}</p></div>
+                {% elif chat.users[0] == current_user %}
+                    <div><p>{{ chat.users[1].username }}</p></div>
+                {% else %}
+                    <div><p>{{ chat.users[0].username }}</p></div>
+                {% endif %}
+            </h4>
+        </div>
+        <div class="chat-message">
+            {% for post in posts %}
+                {% include '_post.html' %}
             {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
-    </form>
-    {% if chat.name.find('none') == -1 %}
-        <a href="{{ url_for('invite_user', name=chat.name) }}">Пригласить нового пользователя в беседу</a>
-    {% endif %}
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.post.label }}<br>
+                    {{ form.post(size=64) }}<br>
+                    {% for error in form.post.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>{{ form.submit() }}</p>
+            </form>
+            {% if chat.name.find('none') == -1 %}
+                <a href="{{ url_for('invite_user', name=chat.name) }}">Пригласить нового пользователя в беседу</a>
+            {% endif %}
+        </div>
+    </div>
  {% endblock %}

@@ -1,0 +1,84 @@
+.first_color{
+	background-color: #8ea6b2;
+}
+
+body{
+	padding: 0px;
+	margin: 0px;
+	background-color: #f7f8fa;
+}
+
+header{
+	width: 100%;
+	height: 50px;
+	display: flex;
+	justify-content: space-around;
+}
+
+.name-logo img{
+	height: 40px;
+	align-self: center;
+}
+
+.name-logo h3{
+	align-self: center;
+}
+
+.name-logo div{
+	height: 100%;
+	display: flex;
+	padding-left: 4px;
+}
+
+.name-logo{
+	height: 100%;
+	display: flex;
+}
+
+.user-information img{
+	height: 40px;
+	align-self: center;
+}
+
+.user-information h4{
+	align-self: center;
+	cursor: pointer;
+}
+
+.user-information h4:hover{
+	text-decoration: underline;
+}
+
+.user-information div{
+	height: 100%;
+	display: flex;
+	padding-left: 4px;
+}
+
+.user-information{
+	height: 100%;
+	display: flex;
+}
+
+.content{
+	display: flex;
+	padding-top: 10px;
+	width: 100%;
+	justify-content: center;
+}
+
+.site-nav{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	align-self: baseline;
+}
+
+.main-part{
+	width: 50%;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	margin-left: 10px;
+}

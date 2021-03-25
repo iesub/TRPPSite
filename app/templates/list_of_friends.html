@@ -6,7 +6,7 @@
         <table>
             <tr valign="top">
                 <td><img src="{{ follower.avatar(36) }}"></td>
-                <td><p>{{ follower.username }}</p></td>
+                <td><a href="{{ url_for('user', username=follower.username) }}">{{ follower.username }}</a></td>
                 <td><a href="{{ url_for('unfollow', username=follower.username) }}">Удалить из списка друзей</a></td>
             </tr>
         </table>
@@ -15,7 +15,7 @@
         <table>
             <tr valign="top">
                 <td><img src="{{ follower.avatar(36) }}"></td>
-                <td><p>{{ follower.username }}</p></td>
+                <td><a href="{{ url_for('user', username=follower.username) }}">{{ follower.username }}</a></td>
                 <td><a href="{{ url_for('unfollow', username=follower.username) }}">Удалить из списка друзей</a></td>
             </tr>
         </table>
