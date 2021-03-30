@@ -1,3 +1,7 @@
+"""
+модуль models
+"""
+
 import pytz
 from datetime import datetime
 from app import db
@@ -14,6 +18,9 @@ followers = db.Table('followers',
 
 
 class User(UserMixin, db.Model):
+    """
+    Таблица пользователя
+    """
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -32,37 +39,89 @@ class User(UserMixin, db.Model):
         return '<User {}>'.format(self.username)
 
     def set_password(self, password):
+        """
+        метод установки пароля
+
+        :param password: пароль
+        :type password: строка
+        :return: ничего не возвращает
+        """
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
+        """
+        метод проверки пароля
+
+        :param password: пароль
+        :type password: строка
+        :return: True или False
+        """
         return check_password_hash(self.password_hash, password)
 
     def avatar(self, size):
+        """
+        метод утображения объекта аватра пользователя
+
+        :param size: размер картинки
+        :type size: число
+        :return: аватар пользователя
+        """
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
             digest, size)
 
     def follow(self, user):
+        """
+        метод добавления пользователя в список друзей
+
+        :param user: пользователь, которого нужно добавить
+        :type user: пользователь
+        :return: ничено не возврщает
+        """
         if not self.is_following(user):
             self.followed.append(user)
 
     def unfollow(self, user):
+        """
+        метод удаления пользователя в список друзей
+
+        :param user: пользователь, которого нужно удалить
+        :type user: пользователь
+        :return: ничено не возврщает
+        """
         if self.is_following(user):
             self.followed.remove(user)
         elif user.is_following(self):
             user.followed.remove(self)
 
     def is_following(self, user):
+        """
+        метод проверки, является пользователь другом
+
+        :param user: пользователь, которого нужно проверить
+        :type user: пользователь
+        :return: True или False
+        """
         return self.followed.filter(
             followers.c.followed_id == user.id).count() > 0
 
 
 @login.user_loader
 def load_user(id):
+    """
+    метод загрузки пользователя из бд
+
+    :param id: id пользователя
+    :type id: число
+    :return: пользователь
+    """
     return User.query.get(int(id))
 
 
 class Post(db.Model):
+    """
+    таблица сообщений пользователей
+    """
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.now(pytz.timezone('Europe/Moscow')))
@@ -74,6 +133,9 @@ class Post(db.Model):
 
 
 class Invitation(db.Model):
+    """
+    таблица приглашений пользователей в чаты
+    """
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     chat_id = db.Column(db.Integer, db.ForeignKey('chat.id'))
@@ -86,6 +148,9 @@ user_chats = db.Table('user_chats',
 
 
 class Chat(db.Model):
+    """
+    таблица чатов
+    """
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True)
     users = db.relationship('User', secondary=user_chats, backref='chats')

@@ -11,8 +11,18 @@ from datetime import datetime
 import pytz
 
 
+"""
+модуль routes
+"""
+
+
 @app.before_request
 def before_request():
+    """
+    метод определения времени последнего действия пользователя
+    
+    :return: ничего не возвращает
+    """
     if current_user.is_authenticated:
         current_user.last_seen = datetime.now(pytz.timezone('Europe/Moscow'))
         db.session.commit()
@@ -22,6 +32,11 @@ def before_request():
 @app.route('/index')
 @login_required
 def index():
+    """
+    метод отбражения главной страницы сайта
+
+    :return: главная страница
+    """
     invite = Invitation.query.filter_by(user=current_user).first()
     if invite is None:
         return render_template('index.html', title='Главная страница', chats=current_user.chats, count=0)
@@ -31,6 +46,11 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """
+    метод отбражения страницы авторизации
+
+    :return: страница авторизации или переход на метод index()
+    """
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = LoginForm()
@@ -49,12 +69,22 @@ def login():
 
 @app.route('/logout')
 def logout():
+    """
+    метод выхода из акаунта
+
+    :return: переход на главную страницу
+    """
     logout_user()
     return redirect(url_for('index'))
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    """
+    метод отбражения страницы регистрации
+
+    :return: страница авторизации или переход на метод index()
+    """
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = RegistrationForm()
@@ -71,6 +101,13 @@ def register():
 @app.route('/user/<username>')
 @login_required
 def user(username):
+    """
+    метод отбражеия профиля пользователя
+
+    :param username: имя пользователя
+    :type username: строка
+    :return: страница профиля пользователя
+    """
     user = User.query.filter_by(username=username).first_or_404()
     chats = user.chats
     return render_template('user.html', user=user, chats=chats, title=user.username)
@@ -79,6 +116,13 @@ def user(username):
 @app.route('/write_message/<username>')
 @login_required
 def write_message(username):
+    """
+    метод перехода на страницу личной переписки с пльзователем
+
+    :param username: имя пользователя
+    :type username: строка
+    :return: переход на метод chat(name)
+    """
     user = User.query.filter_by(username=username).first_or_404()
     chat = Chat.query.filter_by(name='none'+user.username+current_user.username).first()
     if chat is None:
@@ -91,9 +135,16 @@ def write_message(username):
     return redirect(url_for('chat', name=chat.name))
 
 
-@app.route('/chat/<name>', methods= ['GET', 'Post'])
+@app.route('/chat/<name>', methods=['GET', 'Post'])
 @login_required
 def chat(name):
+    """
+    метод отбражения страницы чата
+
+    :param name: название чата
+    :type name: строка
+    :return: страница чата
+    """
     form = PostForm()
     chat = Chat.query.filter_by(name=name).first()
     if form.validate_on_submit():
@@ -109,13 +160,18 @@ def chat(name):
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
+    """
+    метод отбражения страницы изменения данных пользователя
+
+    :return: страница изменения данных пользователя или переход на метод user(username)
+    """
     form = EditProfileForm(current_user.username)
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
         db.session.commit()
         flash('Ваши изменения были сохранены.')
-        return redirect(url_for('edit_profile'))
+        return redirect(url_for('user', username=current_user.username))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
@@ -126,6 +182,11 @@ def edit_profile():
 @app.route('/create_chat', methods=['GET', 'POST'])
 @login_required
 def create_chat():
+    """
+    метод отбражения страницы создания чата
+
+    :return: страница создания чата или переход на метод index()
+    """
     form = CreateChatForm()
     if form.validate_on_submit():
         chat = Chat(name=form.name.data)
@@ -140,9 +201,14 @@ def create_chat():
 @app.route('/search_chat', methods=['GET', 'POST'])
 @login_required
 def search_chat():
+    """
+    метод отбражения страницы поиска чата
+
+    :return: страница поиска чата или переход на метод index()
+    """
     form = SearchChatForm()
     if form.validate_on_submit():
-        chat = Chat.query.filter_by(name = form.name.data).first()
+        chat = Chat.query.filter_by(name=form.name.data).first()
         if chat is None:
             flash('извините, такой беседы не существует')
             return redirect(url_for('search_chat'))
@@ -156,24 +222,31 @@ def search_chat():
 @app.route('/search_user', methods=['GET', 'POST'])
 @login_required
 def search_user():
+    """
+    метод отбражения страницы поиска ползователя
+
+    :return: страница поиска пользователя или переход на метод user(username)
+    """
     form = SearchUserForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username = form.username.data).first()
+        user = User.query.filter_by(username=form.username.data).first()
         if user is None:
             flash('извините, пользователя с таким именем не существует')
             return redirect(url_for('search_user'))
-        chat = Chat(name='none' + user.username + current_user.username)
-        chat.users.append(current_user)
-        chat.users.append(user)
-        db.session.commit()
-        flash('Поздравляю, вы присоединились к беседе!')
-        return redirect(url_for('index'))
+        return redirect(url_for('user', username=user.username))
     return render_template('search_user.html', title='Поиск беседы', form=form)
 
 
 @app.route('/invite_user/<name>', methods=['GET', 'POST'])
 @login_required
 def invite_user(name):
+    """
+    метод приглашения аользователя в чат
+
+    :param name: название чата
+    :type name: строка
+    :return: страница поиска пользователя или переход на метод chat(name)
+    """
     form = SearchUserForm()
     chat = Chat.query.filter_by(name=name).first()
     if form.validate_on_submit():
@@ -187,13 +260,20 @@ def invite_user(name):
         db.session.add(invitation)
         db.session.commit()
         flash('Поздравляю, вы приглосили нового пользователя!')
-        return redirect(url_for('index'))
+        return redirect(url_for('chat', name=name))
     return render_template('search_user.html', title='Поиск беседы', form=form)
 
 
 @app.route('/accept_the_invitation/<invitation_id>')
 @login_required
 def accept_the_invitation(invitation_id):
+    """
+    метод принятия приглашения
+
+    :param invitation_id: id приглашения
+    :type invitation_id: строка
+    :return: переход на метод index()
+    """
     invitation = Invitation.query.filter_by(id=int(invitation_id)).first()
     current_user.chats.append(invitation.chat)
     db.session.delete(invitation)
@@ -204,6 +284,13 @@ def accept_the_invitation(invitation_id):
 @app.route('/decline_the_invitation/<invitation_id>')
 @login_required
 def decline_the_invitation(invitation_id):
+    """
+    метод отклонения приглашения
+
+    :param invitation_id: id приглашения
+    :type invitation_id: строка
+    :return: переход на метод index()
+    """
     invitation = Invitation.query.filter_by(id=int(invitation_id)).first()
     db.session.delete(invitation)
     db.session.commit()
@@ -213,6 +300,13 @@ def decline_the_invitation(invitation_id):
 @app.route('/follow/<username>')
 @login_required
 def follow(username):
+    """
+    метод добавления пользователя в список друзей
+
+    :param username: имя пользователя
+    :type username: строка
+    :return: переход на метод index()
+    """
     user = User.query.filter_by(username=username).first()
     if user is None:
         flash('Пользователь {} не найден.'.format(username))
@@ -228,6 +322,13 @@ def follow(username):
 @app.route('/unfollow/<username>')
 @login_required
 def unfollow(username):
+    """
+    метод удаления пользователя из списока друзей
+
+    :param username: имя пользователя
+    :type username: строка
+    :return: переход на метод index()
+    """
     user = User.query.filter_by(username=username).first()
     if user is None:
         flash('Пользователь {} не найден.'.format(username))
@@ -243,6 +344,11 @@ def unfollow(username):
 @app.route('/list_of_friends')
 @login_required
 def list_of_friends():
+    """
+    метод отбражения страницы списка друзей
+
+    :return: страница списка друзей
+    """
     users = User.query.all()
     followers = []
     followed = []
@@ -257,4 +363,9 @@ def list_of_friends():
 @app.route('/news')
 @login_required
 def news():
+    """
+    метод отбражения страницы новостей
+
+    :return: страница новостей
+    """
     return render_template('news.html', title='Новости')
