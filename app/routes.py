@@ -20,7 +20,7 @@ import pytz
 def before_request():
     """
     метод определения времени последнего действия пользователя
-    
+
     :return: ничего не возвращает
     """
     if current_user.is_authenticated:

@@ -32,7 +32,8 @@ release = '1.0'
 # ones.
 extensions = [
     "sphinx_rtd_theme",
-    "sphinx.ext.autodoc"
+    "sphinx.ext.autodoc",
+    'recommonmark',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -57,3 +58,5 @@ html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 
 html_show_sourcelink = False
+
+source_suffix = ['.rst', '.md']
