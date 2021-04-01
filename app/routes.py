@@ -234,7 +234,7 @@ def search_user():
             flash('извините, пользователя с таким именем не существует')
             return redirect(url_for('search_user'))
         return redirect(url_for('user', username=user.username))
-    return render_template('search_user.html', title='Поиск беседы', form=form)
+    return render_template('list_of_friends.html', title='Поиск беседы', form=form)
 
 
 @app.route('/invite_user/<name>', methods=['GET', 'POST'])
@@ -341,7 +341,7 @@ def unfollow(username):
     return redirect(url_for('user', username=username))
 
 
-@app.route('/list_of_friends')
+@app.route('/list_of_friends', methods=['GET', 'POST'])
 @login_required
 def list_of_friends():
     """
@@ -357,7 +357,14 @@ def list_of_friends():
             followers.append(user)
         elif current_user.is_following(user):
             followed.append(user)
-    return render_template('list_of_friends.html', title='Список друзей', followers=followers, followed=followed)
+    form = SearchUserForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None:
+            flash('извините, пользователя с таким именем не существует')
+            return redirect(url_for('search_user'))
+        return redirect(url_for('user', username=user.username))
+    return render_template('list_of_friends.html', title='Список друзей', followers=followers, followed=followed, form=form)
 
 
 @app.route('/news')

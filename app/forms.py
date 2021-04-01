@@ -120,4 +120,4 @@ class PostForm(FlaskForm):
     """
     post = TextAreaField('Написать сообщение', validators=[
         DataRequired(), Length(min=1, max=140)])
-    submit = SubmitField('подтвердить')
+    submit = SubmitField('отправить')

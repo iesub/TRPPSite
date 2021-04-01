@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <div class = 'main-part'>
     <h1>Войти</h1>
     <form action="" method="post">
         {{ form.hidden_tag() }}
@@ -22,4 +23,5 @@
         <p>{{ form.submit() }}</p>
     </form>
     <p>Новый пользователь? <a href="{{ url_for('register') }}">Нажмите, чтобы зарегистрироваться!</a></p>
+    </div>
  {% endblock %}

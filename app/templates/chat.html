@@ -1,23 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <div class = 'main-part'>
     <link rel="stylesheet" href="../static/messages.css" type="text/css"/>
-     <div class="chat-image">
-            <img src="../static/empty.jpg">
-        </div>
+
         <div class="chat-inf">
-            <h4>{{ current_user.username }}/</h4>
-            <h4>
+         <div class="chat-image">
+            <img src="../static/empty.jpg">
+            <label>
                 {% if chat.name.find('none') == -1 %}
-                    <div><p>{{ chat.name }}</p></div>
+                    <label>{{ chat.name }}</label>
                 {% elif chat.users[0] == current_user %}
-                    <div><p>{{ chat.users[1].username }}</p></div>
+                    <label>{{ chat.users[1].username }}</label>
                 {% else %}
-                    <div><p>{{ chat.users[0].username }}</p></div>
+                    <label>{{ chat.users[0].username }}</label>
                 {% endif %}
-            </h4>
+            </label>
         </div>
-    <div class = "chat-instance">
+        </div>
         <div class="chat-message">
             {% for post in posts %}
                 {% include '_post.html' %}
@@ -37,5 +37,15 @@
                 <a href="{{ url_for('invite_user', name=chat.name) }}">Пригласить нового пользователя в беседу</a>
             {% endif %}
         </div>
+    </div>
+    <div class = "notification-block">
+        {% for user in chat.users %}
+            <div class = "not-block">
+                <p>
+                    <img src="{{ user.avatar(36) }}">
+                    {{ user.username }}
+                </p>
+            </div>
+        {% endfor %}
     </div>
  {% endblock %}
