@@ -21,7 +21,7 @@
     </form>
     <div class = 'friends-messages'>
         {% for chat in chats %}
-            <div class = "chat-instance" onclick = "location.href = '{{ url_for('chat', name=chat.name) }}';">
+            <div class = "chat-instance" onclick = "location.href = '{{ url_for('chat', chat_id=chat.id) }}';">
 					<div class = "chat-image">
 						<img src = "../static/empty.jpg">
 					</div>

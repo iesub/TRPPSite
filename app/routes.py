@@ -41,7 +41,7 @@ def index():
         if form.create_name.data == '':
             chat = Chat.query.filter_by(name=form.search_name.data).first()
             if chat in current_user.chats:
-                return redirect(url_for('chat', name=chat.name))
+                return redirect(url_for('chat', chat_id=chat))
         if form.search_name.data == '':
             chat = Chat.query.filter_by(name=form.create_name.data).first()
             if chat is None:
@@ -53,7 +53,7 @@ def index():
                 db.session.add(post)
                 db.session.commit()
                 flash('Поздравляю, вы создали новую беседу!')
-                return redirect(url_for('chat', name=chat.name))
+                return redirect(url_for('chat', chat_id=chat.id))
     chats = current_user.chats
     chats.sort(key=lambda x: x.posts[-1].timestamp)
     invite = Invitation.query.filter_by(user=current_user).first()
@@ -155,27 +155,27 @@ def write_message(username):
                     timestamp=datetime.now(pytz.timezone('Europe/Moscow')))
         db.session.add(post)
         db.session.commit()
-    return redirect(url_for('chat', name=chat.name))
+    return redirect(url_for('chat', chat_id=chat.id))
 
 
-@app.route('/chat/<name>', methods=['GET', 'Post'])
+@app.route('/chat/<chat_id>', methods=['GET', 'Post'])
 @login_required
-def chat(name):
+def chat(chat_id):
     """
     метод отбражения страницы чата
 
-    :param name: название чата
-    :type name: строка
+    :param chat_id: id чата
+    :type chat_id: число
     :return: страница чата
     """
     form = PostForm()
-    chat = Chat.query.filter_by(name=name).first()
+    chat = Chat.query.filter_by(id=chat_id).first()
     if form.validate_on_submit():
         post = Post(body=form.post.data, author=current_user, chat=chat,
                     timestamp=datetime.now(pytz.timezone('Europe/Moscow')))
         db.session.add(post)
         db.session.commit()
-        return redirect(url_for('chat', name=chat.name))
+        return redirect(url_for('chat', chat_id=chat.id))
     posts = chat.posts
     return render_template("chat.html", title='Home Page', form=form, chat=chat,
                            posts=posts)
@@ -203,30 +203,30 @@ def edit_profile():
                            form=form)
 
 
-@app.route('/invite_user/<name>', methods=['GET', 'POST'])
+@app.route('/invite_user/<chat_id>', methods=['GET', 'POST'])
 @login_required
-def invite_user(name):
+def invite_user(chat_id):
     """
     метод приглашения аользователя в чат
 
-    :param name: название чата
-    :type name: строка
+    :param chat_id: id чата
+    :type chat_id: число
     :return: страница поиска пользователя или переход на метод chat(name)
     """
     form = SearchUserForm()
-    chat = Chat.query.filter_by(name=name).first()
+    chat = Chat.query.filter_by(id=chat_id).first()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None:
             flash('извините, пользователя с таким именем не существует')
-            return redirect(url_for('search_user'))
+            return redirect(url_for('invite_user', chat_id=chat_id))
         invitation = Invitation()
         invitation.user = user
         invitation.chat = chat
         db.session.add(invitation)
         db.session.commit()
         flash('Поздравляю, вы приглосили нового пользователя!')
-        return redirect(url_for('chat', name=name))
+        return redirect(url_for('chat', chat_id=chat_id))
     return render_template('search_user.html', title='Поиск беседы', form=form)
 
 
@@ -328,7 +328,7 @@ def list_of_friends():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None:
             flash('извините, пользователя с таким именем не существует')
-            return redirect(url_for('search_user'))
+            return redirect(url_for('list_of_friends'))
         return redirect(url_for('user', username=user.username))
     return render_template('list_of_friends.html', title='Список друзей', followers=followers, followed=followed,
                            form=form)

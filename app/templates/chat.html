@@ -42,7 +42,7 @@
                 <p>{{ form.submit() }}</p>
             </form>
             {% if chat.name.find('none') == -1 %}
-                <a href="{{ url_for('invite_user', name=chat.name) }}">Пригласить нового пользователя в беседу</a>
+                <a href="{{ url_for('invite_user', chat_id=chat.id) }}">Пригласить нового пользователя в беседу</a>
             {% endif %}
         </div>
     </div>
