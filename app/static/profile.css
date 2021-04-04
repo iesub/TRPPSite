@@ -1,0 +1,105 @@
+.client-inf{
+	display: flex;
+}
+
+.avatar-change{
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: white;
+	border-radius: 10px;
+	padding: 10px;
+}
+
+.avatar-change img{
+	height:200px;
+}
+
+.avatar-change p{
+	border: 2px solid black;
+	border-radius: 5px;
+	padding: 2px;
+	cursor: pointer;
+}
+
+.avatar-change p:hover{
+	background-color: #c3ccd3;
+}
+
+.information-block{
+	margin-left: 20px;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	background-color: white;
+	padding: 10px;
+	border-radius: 10px;
+}
+
+.information-block h3{
+	text-align: center;
+}
+
+.information-block a{
+	text-decoration: none;
+	color: black;
+	border: 2px solid #f7f8fa;
+	border-radius: 5px;
+	padding: 2px;
+}
+
+.information-block a:hover{
+	border-color: black;
+}
+
+.change-information{
+	border: 2px solid black;
+	border-radius: 5px;
+	padding: 2px;
+	cursor: pointer;
+	width: 130px;
+	text-align: center;
+}
+
+.change-information:hover{
+	background-color: #c3ccd3;
+}
+
+.client-news{
+	margin-top: 10px;
+}
+
+.note {
+	background-color: white;
+	padding: 10px;
+	border-radius: 10px;
+	margin-top: 10px;
+}
+
+.note img{
+	height: 150px;
+}
+
+.like:hover{
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.comment:hover{
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.comment-block{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.comment-user-inf img{
+	height: 30px;
+}
+
+.comment-text{
+	margin-left: 10px;
+}

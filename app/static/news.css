@@ -1,0 +1,47 @@
+.note {
+	background-color: white;
+	padding: 10px;
+	border-radius: 10px;
+	margin-top: 10px;
+	width: 100%;
+}
+
+.news-origin{
+	display:flex;
+}
+
+.news-origin p{
+	margin-left: 5px;
+}
+
+.news-origin img{
+	height: 50px;
+}
+
+.note-img-box img{
+	height: 150px;
+}
+
+.like:hover{
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.comment:hover{
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.comment-block{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.comment-user-inf img{
+	height: 30px;
+}
+
+.comment-text{
+	margin-left: 10px;
+}

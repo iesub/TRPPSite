@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class = 'main-part'>
+    <link rel="stylesheet" href="../static/messages.css" type="text/css"/>
+
+        <div class="chat-inf">
+         <div class="chat-image">
+            <img src="../static/empty.jpg">
+            <label>
+                {% if chat.name.find('none') == -1 %}
+                    <label>{{ chat.name }}</label>
+                {% elif chat.users[0] == current_user %}
+                    <label>{{ chat.users[1].username }}</label>
+                {% else %}
+                    <label>{{ chat.users[0].username }}</label>
+                {% endif %}
+            </label>
+        </div>
+        </div>
+        <div class="chat-message">
+            {% for post in posts %}
+                <table>
+                    <tr valign="top">
+                        <td><img src="{{ post.author.avatar(36) }}"></td>
+                        <td><a href="{{ url_for('user', username=post.author.username) }}" {{ post.author.username }}> {{ post.author.username }} </a>
+                            <br>{{ post.body }}
+                            <br>{{ post.timestamp }}
+                        </td>
+                    </tr>
+                </table>
+            {% endfor %}
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.post.label }}<br>
+                    {{ form.post(size=64) }}<br>
+                    {% for error in form.post.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>{{ form.submit() }}</p>
+            </form>
+            {% if chat.name.find('none') == -1 %}
+                <a href="{{ url_for('invite_user', name=chat.name) }}">Пригласить нового пользователя в беседу</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class = "notification-block">
+        {% for user in chat.users %}
+            <div class = "not-block">
+                <p>
+                    <img src="{{ user.avatar(36) }}">
+                    {{ user.username }}
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+ {% endblock %}

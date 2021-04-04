@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class = 'main-part'>
+    <link rel="stylesheet" href="../static/news.css" type="text/css"/>
+    <div class = 'note'>
+        <div class = "news-origin">
+            <img src = "../static/empty.jpg"></img>
+            <p class = "news-creator">Имя автора</p>
+        </div>
+        <p> Сообщение </p>
+        <div class = "note-img-box">
+            <img src = "../static/empty.jpg"/>
+            <img src = "../static/empty.jpg"/>
+        </div>
+        <p class = "toolbar">
+            <label class = "like">
+                Понравилось
+            </label>
+            <label class = "comment">
+                Написать комментарий
+            </label>
+        </p>
+        <div class = 'comment-container'>
+            <div class = 'comment-block'>
+                <div class = 'comment-user-inf'>
+                    <img src = '../static/empty.jpg'>
+                </div>
+                <div class = 'comment-text'>
+                    <p class = 'commentator-name'> Имя пользователя </p>
+                    <p class = 'comment-text'> Комментарий </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class = 'note'>
+        <div class = "news-origin">
+            <img src = "../static/empty.jpg">
+            <p class = "news-creator">Имя автора</p>
+        </div>
+        <p> Сообщение </p>
+        <div class = "note-img-box">
+            <img src = "../static/empty.jpg"/>
+            <img src = "../static/empty.jpg"/>
+        </div>
+        <p class = "toolbar">
+            <label class = "like">
+                Понравилось
+            </label>
+            <label class = "comment">
+                Написать комментарий
+            </label>
+        </p>
+        <div class = 'comment-container'>
+            <div class = 'comment-block'>
+                <div class = 'comment-user-inf'>
+                    <img src = '../static/empty.jpg'>
+                </div>
+                <div class = 'comment-text'>
+                    <p class = 'commentator-name'> Имя пользователя </p>
+                    <p class = 'comment-text'> Комментарий </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,28 @@
+.friend-list{
+	width: 100%;
+}
+
+.friend-inf-container{
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+}
+
+.friend-inf-container img{
+	height: 80px;
+	margin-right: 10px;
+}
+
+.friend-inf{
+	display: flex;
+}
+
+.write-to-friend:hover{
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.friend-inf-container h1:hover{
+	color: grey;
+	cursor: pointer;
+}
