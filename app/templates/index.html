@@ -37,7 +37,7 @@
 						</div>
 						<div class = "chat-last-message">
 							<p> {{ chat.posts[-1].body }}</p>
-                            <p> {{ chat.posts[-1].timestamp }}</p>
+                            <p> {{ chat.posts[-1].timestamp.strftime('%H:%M %d/%m') }}</p>
 						</div>
 					</div>
 				</div>
