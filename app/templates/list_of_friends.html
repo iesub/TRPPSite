@@ -15,25 +15,33 @@
                 {% for follower in followers %}
 				<div class = 'friend-inf-container'>
 					<div class = 'friend-inf' >
-						<img src="{{ follower.avatar(36) }}"/>
+						{% if follower.get_image() == None %}
+                            <img src="../static/empty.jpg">
+                        {% else %}
+                            <img src="data:'image/jpg';base64,{{ follower.get_image() }}">
+                        {% endif %}
 						<div>
 							<p onclick="location.href='{{ url_for('user', username=follower.username)}}';"> {{ follower.username }} </p>
-							<p class = 'write-to-friend' onclick="location.href='{{ url_for('write_message', username=follower.username) }}';"> Написать</p>
+							<p class = 'write-to-friend' onclick="location.href='{{ url_for('write_message', username=follower.username) }}';"><button type="button" class="btn btn-light">Написать</button></p>
 						</div>
 					</div>
-					<h1 class = 'friend-more-options' onclick="location.href='{{ url_for('unfollow', username=follower.username)}}';"> Удалить!!!!!!! </h1>
+					<h3 class = 'friend-more-options' onclick="location.href='{{ url_for('unfollow', username=follower.username)}}';"><button type="button" class="btn btn-light">Delete</button></h3>
 				</div>
                 {% endfor %}
                 {% for follower in followed %}
 				<div class = 'friend-inf-container'>
 					<div class = 'friend-inf'>
-						<img src="{{ follower.avatar(36) }}"/>
+						{% if follower.get_image() == None %}
+                            <img src="../static/empty.jpg">
+                        {% else %}
+                            <img src="data:'image/jpg';base64,{{ follower.get_image() }}">
+                        {% endif %}
 						<div>
 							<p onclick="location.href='{{ url_for('user', username=follower.username)}}';"> {{ follower.username }} </p>
-							<p class = 'write-to-friend' onclick="location.href='{{ url_for('write_message', username=follower.username) }}';"> Написать</p>
+							<p class = 'write-to-friend' onclick="location.href='{{ url_for('write_message', username=follower.username) }}';"><button type="button" class="btn btn-light">Написать</button></p>
 						</div>
 					</div>
-					<h1 class = 'friend-more-options' onclick="location.href='{{ url_for('unfollow', username=follower.username)}}';"> Удалить!!!!!!! </h1>
+					<h3 class = 'friend-more-options' onclick="location.href='{{ url_for('unfollow', username=follower.username)}}';"> <button type="button" class="btn btn-secondary">Delete</button></h3>
 				</div>
                 {% endfor %}
 			</div>

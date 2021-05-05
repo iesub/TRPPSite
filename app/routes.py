@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, flash, redirect, url_for, request
+import sqlite3
+
+from flask import render_template, flash, redirect, url_for, request, make_response
 from werkzeug.urls import url_parse
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, SearchAndCreateChatForm, SearchUserForm, PostForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, SearchAndCreateChatForm, SearchUserForm, PostForm,\
+    CreateNewsForm
 from flask_login import current_user, login_user
-from app.models import User, Chat, Post, Invitation
+from app.models import User, Chat, Post, Invitation, News
 from flask_login import logout_user, login_required
 from datetime import datetime
 import pytz
@@ -41,7 +44,7 @@ def index():
         if form.create_name.data == '':
             chat = Chat.query.filter_by(name=form.search_name.data).first()
             if chat in current_user.chats:
-                return redirect(url_for('chat', chat_id=chat))
+                return redirect(url_for('chat', chat_id=chat.id))
         if form.search_name.data == '':
             chat = Chat.query.filter_by(name=form.create_name.data).first()
             if chat is None:
@@ -130,7 +133,8 @@ def user(username):
     """
     user = User.query.filter_by(username=username).first_or_404()
     chats = user.chats
-    return render_template('user.html', user=user, chats=chats, title=user.username)
+    news = user.news
+    return render_template('user.html', user=user, chats=chats, news=news[::-1], title=user.username)
 
 
 @app.route('/write_message/<username>')
@@ -158,7 +162,7 @@ def write_message(username):
     return redirect(url_for('chat', chat_id=chat.id))
 
 
-@app.route('/chat/<chat_id>', methods=['GET', 'Post'])
+@app.route('/chat/<chat_id>', methods=['GET', 'POST'])
 @login_required
 def chat(chat_id):
     """
@@ -334,6 +338,75 @@ def list_of_friends():
                            form=form)
 
 
+@app.route('/upload', methods=['POST'])
+@login_required
+def upload():
+    file = request.files['file']
+    img = file.read()
+    current_user.image = sqlite3.Binary(img)
+    db.session.commit()
+    return redirect(url_for('user', username=current_user.username))
+
+
+@app.route('/upload_chat_image/<chat_id>', methods=['POST'])
+@login_required
+def upload_chat_image(chat_id):
+    file = request.files['file']
+    img = file.read()
+    chat = Chat.query.filter_by(id=chat_id).first()
+    chat.image = sqlite3.Binary(img)
+    db.session.commit()
+    return redirect(url_for('chat', chat_id=chat_id))
+
+
+@app.route('/create_news', methods=['GET', 'POST'])
+@login_required
+def create_news():
+    form = CreateNewsForm()
+    if form.validate_on_submit():
+        news = News(text=form.text.data, timestamp=datetime.now(pytz.timezone('Europe/Moscow')),
+                    user_id=current_user.id)
+        db.session.add(news)
+        db.session.commit()
+        return render_template('set_news_image.html', title='Выбор изображения', news_id=news.id)
+    return render_template('create_news.html', title='Создание новости', form=form)
+
+
+@app.route('/comment/<username>/<news_id>', methods=['POST'])
+@login_required
+def comment(username, news_id):
+    text = request.form.get('comment')
+    news = News.query.filter_by(id=news_id).first()
+    post = Post(body=text, author=current_user, news=news,
+                timestamp=datetime.now(pytz.timezone('Europe/Moscow')))
+    db.session.add(post)
+    db.session.commit()
+    return redirect(url_for('user', username=username))
+
+
+@app.route('/comment_from_news/<username>/<news_id>', methods=['POST'])
+@login_required
+def comment_from_news(username, news_id):
+    text = request.form.get('comment')
+    news = News.query.filter_by(id=news_id).first()
+    post = Post(body=text, author=current_user, news=news,
+                timestamp=datetime.now(pytz.timezone('Europe/Moscow')))
+    db.session.add(post)
+    db.session.commit()
+    return redirect(url_for('news'))
+
+
+@app.route('/upload_news_image/<news_id>', methods=['POST'])
+@login_required
+def upload_news_image(news_id):
+    file = request.files['file']
+    img = file.read()
+    news = News.query.filter_by(id=news_id).first()
+    news.image = sqlite3.Binary(img)
+    db.session.commit()
+    return redirect(url_for('user', username=current_user.username))
+
+
 @app.route('/news')
 @login_required
 def news():
@@ -342,4 +415,18 @@ def news():
 
     :return: страница новостей
     """
-    return render_template('news.html', title='Новости')
+    news = []
+    users = User.query.all()
+    followers = []
+    followed = []
+    for user in users:
+        if user.is_following(current_user):
+            followers.append(user)
+        elif current_user.is_following(user):
+            followed.append(user)
+    for follower in followers:
+        news += follower.news
+    for follower in followed:
+        news += follower.news
+    news.sort(key=lambda x: x.timestamp)
+    return render_template('news.html', title='Новости', news=news[::-1])

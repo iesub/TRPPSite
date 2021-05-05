@@ -1,34 +1,94 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class = 'main-part'>
-    <link rel="stylesheet" href="../static/messages.css" type="text/css"/>
+    <div class='main-part'>
+        <link rel="stylesheet" href="../static/messages.css" type="text/css"/>
 
         <div class="chat-inf">
-         <div class="chat-image">
-            <img src="../static/empty.jpg">
-            <label>
+            <div class="chat-image">
                 {% if chat.name.find('none') == -1 %}
-                    <label>{{ chat.name }}</label>
-                {% elif chat.users[0] == current_user %}
-                    <label>{{ chat.users[1].username }}</label>
-                {% else %}
-                    <label>{{ chat.users[0].username }}</label>
-                {% endif %}
-            </label>
+                 {% if chat.get_image() == None %}
+                     <img src="../static/empty.jpg">
+                 {% else %}
+                     <img src="data:'image/jpg';base64,{{ chat.get_image() }}">
+                 {% endif %}
+                 <label>{{ chat.name }}</label>
+             {% elif chat.users[0] == current_user %}
+                 {% if chat.users[1].get_image() == None %}
+                    <img src="../static/empty.jpg">
+                 {% else %}
+                    <img src="data:'image/jpg';base64,{{ chat.users[1].get_image() }}">
+                 {% endif %}
+                 <label>{{ chat.users[1].username }}</label>
+             {% else %}
+                 {% if chat.users[0].get_image() == None %}
+                    <img src="../static/empty.jpg">
+                 {% else %}
+                    <img src="data:'image/jpg';base64,{{ chat.users[0].get_image() }}">
+                 {% endif %}
+                 <label>{{ chat.users[0].username }}</label>
+             {% endif %}
+            </div>
         </div>
-        </div>
+
         <div class="chat-message">
+
             {% for post in posts %}
-                <table>
-                    <tr valign="top">
-                        <td><img src="{{ post.author.avatar(36) }}"></td>
-                        <td><a href="{{ url_for('user', username=post.author.username) }}" {{ post.author.username }}> {{ post.author.username }} </a>
-                            <br>{{ post.body }}
-                            <br>{{ post.timestamp.strftime('%H:%M %d/%m') }}
-                        </td>
-                    </tr>
-                </table>
+                {% if current_user==post.author %}
+                    <div class="current-user">
+                        <table>
+                            <tr valign="top">
+                                <td>
+                                    {% if post.author.get_image() == None %}
+                                <img src="../static/empty.jpg" width="36" height="36">
+                            {% else %}
+                                <img src="data:'image/jpg';base64,{{ post.author.get_image() }}" width="36" height="36">
+                            {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('user', username=post.author.username) }}" {{ post.author.username }}
+                                    >
+                                        {{ post.author.username }} </a>
+                                    <br>{{ post.body }}
+                                    <br>{{ post.timestamp.strftime('%H:%M %d/%m') }}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="message-user">
+                        <table>
+                            <tr valign="top">
+                                <td>{% if post.author.get_image() == None %}
+                                <img src="../static/empty.jpg" width="36" height="36">
+                            {% else %}
+                                <img src="data:'image/jpg';base64,{{ post.author.get_image() }}" width="36" height="36">
+                            {% endif %}</td>
+                                <td>
+                                    <a href="{{ url_for('user', username=post.author.username) }}" {{ post.author.username }}
+                                    >
+                                        {{ post.author.username }} </a>
+                                    <br>{{ post.body }}
+                                    <br>{{ post.timestamp.strftime('%H:%M %d/%m') }}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                {% endif %}
+                {#                <div class="message-user">#}
+                {#                    <table>#}
+                {#                        <tr valign="top">#}
+                {#                            <td><img src="{{ post.author.avatar(36) }}"></td>#}
+                {#                            <td>#}
+                {#                                <a href="{{ url_for('user', username=post.author.username) }}" {{ post.author.username }}>#}
+                {#                                    {{ post.author.username }} </a>#}
+                {#                                <br>{{ post.body }}#}
+                {#                                <br>{{ post.timestamp.strftime('%H:%M %d/%m') }}#}
+                {#                            </td>#}
+                {#                        </tr>#}
+                {#                    </table>#}
+                {#                </div>#}
+
             {% endfor %}
             <form action="" method="post">
                 {{ form.hidden_tag() }}
@@ -41,19 +101,36 @@
                 </p>
                 <p>{{ form.submit() }}</p>
             </form>
-            {% if chat.name.find('none') == -1 %}
-                <a href="{{ url_for('invite_user', chat_id=chat.id) }}">Пригласить нового пользователя в беседу</a>
-            {% endif %}
+
         </div>
     </div>
-    <div class = "notification-block">
-        {% for user in chat.users %}
-            <div class = "not-block">
-                <p>
-                    <img src="{{ user.avatar(36) }}">
+    <div class="notification-block">
+        <div class="card-header">Напоминание</div>
+        <div class="card-body">
+            {% if chat.name.find('none') == -1 %}
+                <h5 class="card-title"><a href="{{ url_for('invite_user', chat_id=chat.id) }}">Пригласить нового пользователя в беседу</a></h5>
+            {% endif %}
+            {% for user in chat.users %}
+                <div class="not-block">
+                    <p>
+                        {% if user.get_image() == None %}
+                        <img src="../static/empty.jpg" width="36" height="36">
+                    {% else %}
+                        <img src="data:'image/jpg';base64,{{ user.get_image() }}" width="36" height="36">
+                    {% endif %}
                     {{ user.username }}
-                </p>
-            </div>
-        {% endfor %}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
     </div>
- {% endblock %}
+
+{% endblock %}
+
+<javascript>
+    $(document).ready(function(){
+    $('#action_menu_btn').click(function(){
+    $('.action_menu').toggle();
+    });
+    });
+</javascript>

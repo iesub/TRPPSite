@@ -9,12 +9,19 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import login
 from hashlib import md5
+from base64 import b64encode
 
 
 followers = db.Table('followers',
                      db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
                      db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
                      )
+
+
+user_news = db.Table('user_news',
+                      db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                      db.Column('news_id', db.Integer, db.ForeignKey('news.id'))
+                      )
 
 
 class User(UserMixin, db.Model):
@@ -34,9 +41,16 @@ class User(UserMixin, db.Model):
         primaryjoin=(followers.c.follower_id == id),
         secondaryjoin=(followers.c.followed_id == id),
         backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
+    image = db.Column(db.BLOB, default=None)
+    news = db.relationship('News', backref='author', lazy='dynamic')
+    liked_news = db.relationship('User', secondary=user_news, backref='liked_users')
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
+
+    def get_image(self):
+        if self.image is not None:
+            return b64encode(self.image).decode('UTF-8')
 
     def set_password(self, password):
         """
@@ -127,6 +141,7 @@ class Post(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.now(pytz.timezone('Europe/Moscow')))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     chat_id = db.Column(db.Integer, db.ForeignKey('chat.id'))
+    news_id = db.Column(db.Integer, db.ForeignKey('news.id'))
 
     def __repr__(self):
         return '{}'.format(self.body)
@@ -156,3 +171,21 @@ class Chat(db.Model):
     users = db.relationship('User', secondary=user_chats, backref='chats')
     posts = db.relationship('Post', backref='chat', lazy='dynamic')
     invitations = db.relationship('Invitation', backref='chat', lazy='dynamic')
+    image = db.Column(db.BLOB, default=None)
+
+    def get_image(self):
+        if self.image is not None:
+            return b64encode(self.image).decode('UTF-8')
+
+
+class News(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(140))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.now(pytz.timezone('Europe/Moscow')))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    image = db.Column(db.BLOB, default=None)
+    comments = db.relationship('Post', backref='news', lazy='dynamic')
+
+    def get_image(self):
+        if self.image is not None:
+            return b64encode(self.image).decode('UTF-8')

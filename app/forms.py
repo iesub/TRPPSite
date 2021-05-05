@@ -56,8 +56,8 @@ class EditProfileForm(FlaskForm):
     """
     форма изменения профиля пользователя
     """
-    username = StringField('Username', validators=[DataRequired()])
-    about_me = TextAreaField('About me', validators=[Length(min=0, max=140)])
+    username = StringField('Новое имя пользователя', validators=[DataRequired()])
+    about_me = TextAreaField('О себе', validators=[Length(min=0, max=140)])
     submit = SubmitField('Подтвердить')
 
     def __init__(self, original_username, *args, **kwargs):
@@ -115,3 +115,8 @@ class PostForm(FlaskForm):
     post = TextAreaField('Написать сообщение', validators=[
         DataRequired(), Length(min=1, max=140)])
     submit = SubmitField('отправить')
+
+
+class CreateNewsForm(FlaskForm):
+    text = TextAreaField('Сообщение')
+    submit = SubmitField('перейти к выбору изображения')
