@@ -1,44 +1,81 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class = 'main-part'>
-    <h1>Привет, {{ current_user.username }}!</h1>
-    <h2>Ваши чаты:</h2>
-    <div class = 'friends-messages'>
-        {% for chat in chats %}
-            <div class = "chat-instance" onclick = "location.href = '{{ url_for('chat', name=chat.name) }}';">
-					<div class = "chat-image">
-						<img src = "system_img/empty.jpg">
-					</div>
-					<div class = "chat-inf">
-						<div class = "chat-name">
-                            {% if chat.name.find('none') == -1 %}
-                                <h4>{{ chat.name }}</h4>
-                            {% elif chat.users[0] == current_user %}
-                                <h4>{{chat.users[1].username }}</h4>
-                            {% else %}
-                                <h4>{{chat.users[0].username }}</h4>
-                            {% endif %}
-						</div>
-						<div class = "chat-last-message">
-							<p>Последнее  сообщение</p>
-						</div>
-					</div>
-				</div>
-                {% endfor %}
-        </div>
-    </div>
-    <div class = "notification-block">
-    {% if count > 0 %}
-    <p>Вас приглашают в следующие чаты:</p>
-        {% for invitation in invitations %}
-            <div class = "not-block">
-                <p>{{ invitation.chat.name }}</p>
-                <p><a href="{{ url_for('accept_the_invitation', invitation_id=invitation.id) }}">Принять приглашение</a></p>
-                <p><a href="{{ url_for('decline_the_invitation', invitation_id=invitation.id) }}">Отклонить приглашение</a></p>
-            </div>
-        {% endfor %}
-    {% endif %}
 
+    <div class="row">
+        <div class="col-lg-9 col-md-9 col-sm-9">
+            <div class='main-part'>
+                <h1>Привет, {{ current_user.username }}!</h1>
+                <h2>Ваши чаты:</h2>
+                <form action="" method="post" novalidate>
+                    {{ form.hidden_tag() }}
+                    {{ form.create_name.label }}<br>
+                    {#    size=64#}
+                    {{ form.create_name() }}
+                    {% for error in form.create_name.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                    {{ form.create_submit() }}<br>
+                    {{ form.search_name.label }}<br>
+                    {{ form.search_name() }}
+                    {% for error in form.search_name.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                    {{ form.search_submit() }}
+                </form>
+                <div class='friends-messages'>
+                    {% for chat in chats %}
+                        <div class="chat-instance"
+                             onclick="location.href = '{{ url_for('chat', chat_id=chat.id) }}';">
+                            <div class="chat-image">
+                                <img src="../static/empty.jpg">
+                            </div>
+                            <div class="chat-inf">
+                                <div class="chat-name">
+                                    {% if chat.name.find('none') == -1 %}
+                                        <h4>{{ chat.name }}</h4>
+                                    {% elif chat.users[0] == current_user %}
+                                        <h4>{{ chat.users[1].username }}</h4>
+                                    {% else %}
+                                        <h4>{{ chat.users[0].username }}</h4>
+                                    {% endif %}
+                                </div>
+                                <div class="chat-last-message">
+                                    <p> {{ chat.posts[-1].body }}</p>
+                                    <p> {{ chat.posts[-1].timestamp.strftime('%H:%M %d/%m') }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <div class="notification-block">
+                    {% if count > 0 %}
+                        <div class="card text-black bg-light mb-3" style="max-width: 20rem;">
+                            <div class="card-header">Напоминание</div>
+                            <div class="card-body">
+                                <h5 class="card-title">Вас приглашают в следующие чаты:</h5>
+                                {% for invitation in invitations %}
+                                    <div class="not-block">
+                                        <p>{{ invitation.chat.name }}</p>
+                                        <p class="card-text"><a
+                                                href="{{ url_for('accept_the_invitation', invitation_id=invitation.id) }}">Принять
+                                            приглашение</a></p>
+                                    </div>
+                                    <p class="card-text"><a
+                                            href="{{ url_for('decline_the_invitation', invitation_id=invitation.id) }}">Отклонить
+                                        приглашение</a></p>
+                                    </div>
+                                    </div>
+
+
+                                {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
