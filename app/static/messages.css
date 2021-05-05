@@ -26,6 +26,11 @@
 	height: 50px;
 }
 
+.invite-block {
+	padding-left: 3px;
+	width: 40%;
+}
+
 .notification-block {
 	padding-left: 3px;
 	width: 150%;
