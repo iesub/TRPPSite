@@ -90,18 +90,18 @@
                 {#                </div>#}
 
             {% endfor %}
-            <form action="" method="post">
-                {{ form.hidden_tag() }}
-                <p>
-                    {{ form.post.label }}<br>
-                    {{ form.post(size=64) }}<br>
-                    {% for error in form.post.errors %}
-                        <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </p>
-                <p>{{ form.submit() }}</p>
+            <form action="{{ url_for('message', chat_id=chat.id) }}" method="POST" enctype="multipart/form-data">
+                <p><label>
+                    <textarea cols="40" name="text"></textarea>
+                </label></p>
+                    <p><input type="submit" value="отправить"></p>
             </form>
-
+            {% if prev_url %}
+                <a href="{{ prev_url }}">предыдущие сообщения</a>
+            {% endif %}
+            {% if next_url %}
+                <a href="{{ next_url }}">более новые сообщения</a>
+            {% endif %}
         </div>
     </div>
     <div class="invite-block">

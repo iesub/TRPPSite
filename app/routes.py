@@ -133,8 +133,8 @@ def user(username):
     """
     user = User.query.filter_by(username=username).first_or_404()
     chats = user.chats
-    news = user.news
-    return render_template('user.html', user=user, chats=chats, news=news[::-1], title=user.username)
+    news = user.news[::-1][:5]
+    return render_template('user.html', user=user, chats=chats, news=news, title=user.username)
 
 
 @app.route('/write_message/<username>')
@@ -172,17 +172,28 @@ def chat(chat_id):
     :type chat_id: число
     :return: страница чата
     """
-    form = PostForm()
     chat = Chat.query.filter_by(id=chat_id).first()
-    if form.validate_on_submit():
-        post = Post(body=form.post.data, author=current_user, chat=chat,
-                    timestamp=datetime.now(pytz.timezone('Europe/Moscow')))
-        db.session.add(post)
-        db.session.commit()
-        return redirect(url_for('chat', chat_id=chat.id))
-    posts = chat.posts
-    return render_template("chat.html", title='Home Page', form=form, chat=chat,
-                           posts=posts)
+    page = request.args.get('page', len(list(chat.posts)) // app.config['MESSAGES_PER_PAGE'] + 1, type=int)
+    posts = chat.posts.paginate(page, app.config['MESSAGES_PER_PAGE'], False)
+    next_url = url_for('chat', chat_id=chat_id, page=posts.next_num) \
+        if posts.has_next else None
+    prev_url = url_for('chat', chat_id=chat_id, page=posts.prev_num) \
+        if posts.has_prev else None
+    return render_template("chat.html", title='Home Page', chat=chat,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@app.route('/message/<chat_id>', methods=['POST'])
+@login_required
+def message(chat_id):
+    text = request.form.get('text')
+    chat = Chat.query.filter_by(id=chat_id).first()
+    post = Post(body=text, author=current_user, chat=chat,
+                timestamp=datetime.now(pytz.timezone('Europe/Moscow')))
+    db.session.add(post)
+    db.session.commit()
+    return redirect(url_for('chat', chat_id=chat_id))
 
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
