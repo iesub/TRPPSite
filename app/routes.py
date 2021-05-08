@@ -133,7 +133,7 @@ def user(username):
     """
     user = User.query.filter_by(username=username).first_or_404()
     chats = user.chats
-    news = user.news[::-1][:5]
+    news = user.news[::-1][:app.config['NEWS_PER_USER_PAGE']]
     return render_template('user.html', user=user, chats=chats, news=news, title=user.username)
 
 
@@ -162,7 +162,7 @@ def write_message(username):
     return redirect(url_for('chat', chat_id=chat.id))
 
 
-@app.route('/chat/<chat_id>', methods=['GET', 'POST'])
+@app.route('/chat/<chat_id>', methods=['GET'])
 @login_required
 def chat(chat_id):
     """
@@ -440,4 +440,4 @@ def news():
     for follower in followed:
         news += follower.news
     news.sort(key=lambda x: x.timestamp)
-    return render_template('news.html', title='Новости', news=news[::-1])
+    return render_template('news.html', title='Новости', news=news[::-1][:app.config['NEWS_PER_PAGE']])
