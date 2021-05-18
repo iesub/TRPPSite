@@ -15,8 +15,8 @@
                                 {% endif %}
                                 {% if user == current_user %}
                                     <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
-                                        <p><input type="file" name="file"></p>
-                                        <p><input type="submit" value="Сменить аватар"></p>
+                                        <p><input type="file" name="file" class="form-control-file" id="exampleFormControlFile1"></p>
+                                        <p> <button type="submit" class="btn btn-light">Сменить аватар</button></p>
                                     </form>
                                 {% endif %}
 
@@ -53,7 +53,8 @@
                 <div class="col-lg-5 col-md-32 col-sm-32">
                     <div class='client-news'>
                         {% if user==current_user %}
-                            <a href="{{ url_for('create_news') }}"> Опубликовать новость</a><br>
+                            <p><button type="submit" class="btn btn-light" ><a href="{{ url_for('create_news') }}">Опубликовать новость</a></button></p>
+                             
                         {% endif %}
                         {% for news_item in news %}
                             <div class='note'>
@@ -71,7 +72,7 @@
                                 <form action="{{ url_for('comment', username=user.username, news_id=news_item.id) }}"
                                       method="POST" enctype="multipart/form-data">
                                     <p><input type="text" name="comment" placeholder="Написать комментарий"></p>
-                                    <p><input type="submit" value="Опубликовать комментарий"></p>
+                                <p><button type="submit" class="btn btn-light" >Опубликовать комментарий</button></p>
                                 </form>
                                 </label>
                                 </p>
