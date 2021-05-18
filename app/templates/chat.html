@@ -40,7 +40,7 @@
                             <tr valign="top">
                                 <td>
                                     {% if post.author.get_image() == None %}
-                                <img src="../static/empty.jpg" width="36" height="36">
+                                <img src="../static/empty.jpg" max-width="36" height="36">
                             {% else %}
                                 <img src="data:'image/jpg';base64,{{ post.author.get_image() }}" width="36" height="36">
                             {% endif %}

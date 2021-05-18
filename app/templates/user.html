@@ -50,11 +50,11 @@
         </div>
         <div class="row justify-content-center">
             <div class="row">
-                <div class="col-lg-5 col-md-32 col-sm-32">
+                <div class="col-lg-5 col-md-12 col-sm-12">
                     <div class='client-news'>
                         {% if user==current_user %}
                             <p><button type="submit" class="btn btn-light" ><a href="{{ url_for('create_news') }}">Опубликовать новость</a></button></p>
-                             
+
                         {% endif %}
                         {% for news_item in news %}
                             <div class='note'>
@@ -81,10 +81,9 @@
                                         <div class='comment-block'>
                                             <div class='comment-user-inf'>
                                                 {% if comment.author.get_image() == None %}
-                                                    <img src="../static/empty.jpg" class="responsive">
+                                                    <img src="../static/empty.jpg" max-width="36" class="responsive">
                                                 {% else %}
-                                                    <img src="data:'image/jpg';base64,{{ comment.author.get_image() }}"
-                                                         class="responsive">
+                                                    <img src="data:'image/jpg';base64,{{ comment.author.get_image() }}"  max-width="36" class="responsive">
                                                 {% endif %}
                                             </div>
                                             <div class='comment-text'>
