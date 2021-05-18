@@ -63,7 +63,7 @@
 
             <div class="name-logo">
                 <div>
-                    <img src="../static/empty.jpg"/> <!-- Лого сайта -->
+                    <img src="../static/empty.jpg" class="responsive"/> <!-- Лого сайта -->
                 </div>
 
             <div class="left_area">
@@ -75,22 +75,22 @@
 
                 {% if current_user.is_authenticated %}
                     <div class="user-information"
-                         onclick="location.href='{{ url_for('user', username=current_user.username) }}';">
-                        <div>
-                            <h3>{{ current_user.username }}</h3>
-                        </div>
-                        <div>
-                            {% if current_user.get_image() == None %}
-                                <img src="../static/empty.jpg">
-                            {% else %}
-                                <img src="data:'image/jpg';base64,{{ current_user.get_image() }}">
-                            {% endif %}
-                        </div>
+{#                         onclick="location.href='{{ url_for('user', username=current_user.username) }}';">#}
+{#                        <div>#}
+{#                            <h3>{{ current_user.username }}</h3>#}
+{#                        </div>#}
+{#                        <div>#}
+{#                            {% if current_user.get_image() == None %}#}
+{#                                <img src="../static/empty.jpg" class="responsive">#}
+{#                            {% else %}#}
+{#                                <img src="data:'image/jpg';base64,{{ current_user.get_image() }}" class="responsive">#}
+{#                            {% endif %}#}
+{#                        </div>#}
                         <div>
                             {% if current_user.is_anonymous %}
-                                <a href="{{ url_for('login') }}" class="logout_btn"><h3>Войти</h3></a>
+                                <a href="{{ url_for('login') }}" class="logout_btn"><h4>Войти</h4></a>
                             {% else %}
-                                <a href="{{ url_for('logout') }}" class="logout_btn"><h3>Выйти</h3></a>
+                                <a href="{{ url_for('logout') }}" class="logout_btn"><h4>Выйти</h4></a>
                             {% endif %}
                         </div>
 
@@ -122,11 +122,16 @@
         <div class="profile_info">
             {% if current_user.is_authenticated %}
                 {% if current_user.get_image() == None %}
-                    <img src="../static/empty.jpg">
+                    <img src="../static/empty.jpg" class="responsive">
                 {% else %}
-                    <img src="data:'image/jpg';base64,{{ current_user.get_image() }}">
+                    <img src="data:'image/jpg';base64,{{ current_user.get_image() }}" class="responsive">
                 {% endif %}
-                <h4>{{ current_user.username }}</h4>
+                <div class="user-information"
+                         onclick="location.href='{{ url_for('user', username=current_user.username) }}';">
+                        <div>
+                            <h3>{{ current_user.username }}</h3>
+                        </div>
+                </div>
             {% endif %}
         </div>
         <a href="{{ url_for('index') }}"><i class="fas fa-envelope"></i><span>Чаты</span></a>
