@@ -6,16 +6,28 @@
 
         <div class="chat-inf">
             <div class="chat-image">
-                <img src="../static/empty.jpg">
-                <label>
-                    {% if chat.name.find('none') == -1 %}
-                        <label>{{ chat.name }}</label>
-                    {% elif chat.users[0] == current_user %}
-                        <label>{{ chat.users[1].username }}</label>
-                    {% else %}
-                        <label>{{ chat.users[0].username }}</label>
-                    {% endif %}
-                </label>
+                {% if chat.name.find('none') == -1 %}
+                 {% if chat.get_image() == None %}
+                     <img src="../static/empty.jpg">
+                 {% else %}
+                     <img src="data:'image/jpg';base64,{{ chat.get_image() }}">
+                 {% endif %}
+                 <label>{{ chat.name }}</label>
+             {% elif chat.users[0] == current_user %}
+                 {% if chat.users[1].get_image() == None %}
+                    <img src="../static/empty.jpg">
+                 {% else %}
+                    <img src="data:'image/jpg';base64,{{ chat.users[1].get_image() }}">
+                 {% endif %}
+                 <label>{{ chat.users[1].username }}</label>
+             {% else %}
+                 {% if chat.users[0].get_image() == None %}
+                    <img src="../static/empty.jpg">
+                 {% else %}
+                    <img src="data:'image/jpg';base64,{{ chat.users[0].get_image() }}">
+                 {% endif %}
+                 <label>{{ chat.users[0].username }}</label>
+             {% endif %}
             </div>
         </div>
 
@@ -26,7 +38,13 @@
                     <div class="current-user">
                         <table>
                             <tr valign="top">
-                                <td><img src="{{ post.author.avatar(36) }}"></td>
+                                <td>
+                                    {% if post.author.get_image() == None %}
+                                <img src="../static/empty.jpg" width="36" height="36">
+                            {% else %}
+                                <img src="data:'image/jpg';base64,{{ post.author.get_image() }}" width="36" height="36">
+                            {% endif %}
+                                </td>
                                 <td>
                                     <a href="{{ url_for('user', username=post.author.username) }}" {{ post.author.username }}
                                     >
@@ -41,7 +59,11 @@
                     <div class="message-user">
                         <table>
                             <tr valign="top">
-                                <td><img src="{{ post.author.avatar(36) }}"></td>
+                                <td>{% if post.author.get_image() == None %}
+                                <img src="../static/empty.jpg" width="36" height="36">
+                            {% else %}
+                                <img src="data:'image/jpg';base64,{{ post.author.get_image() }}" width="36" height="36">
+                            {% endif %}</td>
                                 <td>
                                     <a href="{{ url_for('user', username=post.author.username) }}" {{ post.author.username }}
                                     >
@@ -68,31 +90,39 @@
                 {#                </div>#}
 
             {% endfor %}
-            <form action="" method="post">
-                {{ form.hidden_tag() }}
-                <p>
-                    {{ form.post.label }}<br>
-                    {{ form.post(size=64) }}<br>
-                    {% for error in form.post.errors %}
-                        <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </p>
-                <p>{{ form.submit() }}</p>
+            <form action="{{ url_for('message', chat_id=chat.id) }}" method="POST" enctype="multipart/form-data">
+                <p><label>
+                    <textarea cols="40" name="text"></textarea>
+                </label></p>
+                    <p><input type="submit" value="отправить"></p>
             </form>
-
+            {% if prev_url %}
+                <a href="{{ prev_url }}">предыдущие сообщения</a>
+            {% endif %}
+            {% if next_url %}
+                <a href="{{ next_url }}">более новые сообщения</a>
+            {% endif %}
         </div>
     </div>
-    <div class="notification-block">
+    <div class="invite-block">
         <div class="card-header">Напоминание</div>
         <div class="card-body">
             {% if chat.name.find('none') == -1 %}
                 <h5 class="card-title"><a href="{{ url_for('invite_user', chat_id=chat.id) }}">Пригласить нового пользователя в беседу</a></h5>
+                <form action="{{ url_for('upload_chat_image', chat_id=chat.id) }}" method="POST" enctype="multipart/form-data">
+                    <p><input type="file" name="file"></p>
+                    <p><input type="submit" value="Сменить изображение чата"></p>
+                </form>
             {% endif %}
             {% for user in chat.users %}
                 <div class="not-block">
                     <p>
-                        <img src="{{ user.avatar(36) }}">
-                        {{ user.username }}
+                        {% if user.get_image() == None %}
+                        <img src="../static/empty.jpg" width="36" height="36">
+                    {% else %}
+                        <img src="data:'image/jpg';base64,{{ user.get_image() }}" width="36" height="36">
+                    {% endif %}
+                    {{ user.username }}
                     </p>
                 </div>
             {% endfor %}

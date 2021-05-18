@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class = 'main-part'>
+        <h1>Выберете изображение</h1>
+        <form action="{{ url_for('upload_news_image', news_id=news_id) }}" method="POST" enctype="multipart/form-data">
+            <p><input type="file" name="file"></p>
+            <p><input type="submit" value="опубликовать"></p>
+        </form>
+    </div>
+ {% endblock %}

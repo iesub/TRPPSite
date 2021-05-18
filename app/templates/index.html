@@ -28,7 +28,25 @@
                         <div class="chat-instance"
                              onclick="location.href = '{{ url_for('chat', chat_id=chat.id) }}';">
                             <div class="chat-image">
-                                <img src="../static/empty.jpg">
+                                {% if chat.name.find('none') == -1 %}
+                            {% if chat.get_image() == None %}
+                                <img src="../static/empty.jpg" class="responsive">
+                            {% else %}
+                                <img src="data:'image/jpg';base64,{{ chat.get_image() }}" class="responsive">
+                            {% endif %}
+                        {% elif chat.users[0] == current_user %}
+                            {% if chat.users[1].get_image() == None %}
+                                <img src="../static/empty.jpg" class="responsive">
+                            {% else %}
+                                <img src="data:'image/jpg';base64,{{ chat.users[1].get_image() }}" class="responsive">
+                            {% endif %}
+                        {% else %}
+                            {% if chat.users[0].get_image() == None %}
+                                <img src="../static/empty.jpg" class="responsive">
+                            {% else %}
+                                <img src="data:'image/jpg';base64,{{ chat.users[0].get_image() }}" class="responsive">
+                            {% endif %}
+                        {% endif %}
                             </div>
                             <div class="chat-inf">
                                 <div class="chat-name">
@@ -41,7 +59,7 @@
                                     {% endif %}
                                 </div>
                                 <div class="chat-last-message">
-                                    <p> {{ chat.posts[-1].body }}</p>
+                                    <p> {{ chat.posts[-1].body[:15] }}</p>
                                     <p> {{ chat.posts[-1].timestamp.strftime('%H:%M %d/%m') }}</p>
                                 </div>
                             </div>
@@ -49,12 +67,13 @@
                     {% endfor %}
                 </div>
             </div>
+            </div>
 
 
             <div class="col-lg-3 col-md-3 col-sm-3">
                 <div class="notification-block">
                     {% if count > 0 %}
-                        <div class="card text-black bg-light mb-3" style="max-width: 20rem;">
+                        <div class="card text-black bg-light mb-3">
                             <div class="card-header">Напоминание</div>
                             <div class="card-body">
                                 <h5 class="card-title">Вас приглашают в следующие чаты:</h5>
@@ -64,10 +83,10 @@
                                         <p class="card-text"><a
                                                 href="{{ url_for('accept_the_invitation', invitation_id=invitation.id) }}">Принять
                                             приглашение</a></p>
-                                    </div>
-                                    <p class="card-text"><a
+                                        <p class="card-text"><a
                                             href="{{ url_for('decline_the_invitation', invitation_id=invitation.id) }}">Отклонить
                                         приглашение</a></p>
+                                    </div>
                                     </div>
                                     </div>
 
@@ -77,5 +96,4 @@
                 </div>
             </div>
         </div>
-    </div>
 {% endblock %}
