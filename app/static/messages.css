@@ -1,13 +1,13 @@
 .friends-messages{
 	padding-left: 5%;
-	width: 60%;
+	width: 100%;
 }
 
 .chat-instance{
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	width: 90%;
+	width: 100%;
 	margin-left: 2%;
 	border: 1px solid #f7f8fa;
 	padding: 5px;
@@ -26,9 +26,14 @@
 	height: 50px;
 }
 
+.invite-block {
+	padding-left: 3px;
+	width: 20%;
+}
+
 .notification-block {
 	padding-left: 3px;
-	width: 15%;
+	width: 150%;
 }
 
 .not-block:hover{
@@ -83,5 +88,8 @@ chat-message{
 	margin-left: 2%;
 	border: 1px solid #f7f8fa;
 	padding: 5px;
-	border-radius: 10px;
+	border-radius: 5px;
+
 }
+
+
