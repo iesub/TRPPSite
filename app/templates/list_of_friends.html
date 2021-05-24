@@ -1,49 +1,65 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class = 'main-part'>
-    <form action="" method="post">
-        {{ form.hidden_tag() }}
-            {{ form.username.label }}<br>
-            {{ form.username(size=64) }}
-            {% for error in form.username.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-            {{ form.submit() }}
-    </form>
-			<div class = 'friend-list'>
-                {% for follower in followers %}
-				<div class = 'friend-inf-container'>
-					<div class = 'friend-inf' >
-						{% if follower.get_image() == None %}
-                            <img src="../static/empty.jpg" class="responsive">
-                        {% else %}
-                            <img src="data:'image/jpg';base64,{{ follower.get_image() }}" class="responsive">
-                        {% endif %}
-						<div>
-							<p onclick="location.href='{{ url_for('user', username=follower.username)}}';"> {{ follower.username }} </p>
-							<p class = 'write-to-friend' onclick="location.href='{{ url_for('write_message', username=follower.username) }}';"><button type="button" class="btn btn-light">Написать</button></p>
-						</div>
-					</div>
-					<h3 class = 'friend-more-options' onclick="location.href='{{ url_for('unfollow', username=follower.username)}}';"><button type="button" class="btn btn-secondary">Delete</button></h3>
-				</div>
-                {% endfor %}
-                {% for follower in followed %}
-				<div class = 'friend-inf-container'>
-					<div class = 'friend-inf'>
-						{% if follower.get_image() == None %}
-                            <img src="../static/empty.jpg" class="responsive">
-                        {% else %}
-                            <img src="data:'image/jpg';base64,{{ follower.get_image() }}" class="responsive">
-                        {% endif %}
-						<div>
-							<p onclick="location.href='{{ url_for('user', username=follower.username)}}';"> {{ follower.username }} </p>
-							<p class = 'write-to-friend' onclick="location.href='{{ url_for('write_message', username=follower.username) }}';"><button type="button" class="btn btn-light">Написать</button></p>
-						</div>
-					</div>
-					<h3 class = 'friend-more-options' onclick="location.href='{{ url_for('unfollow', username=follower.username)}}';"> <button type="button" class="btn btn-secondary">Delete</button></h3>
-				</div>
-                {% endfor %}
-			</div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class='main-part'>
+                <form action="" method="post">
+                    {{ form.hidden_tag() }}
+                    {{ form.username.label }}<br>
+                    {{ form.username(size=64) }}
+                    {% for error in form.username.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                    {{ form.submit() }}
+                </form>
+                <div class='friend-list'>
+                    {% for follower in followers %}
+                        <div class='friend-inf-container'>
+                            <div class='friend-inf'>
+                                {% if follower.get_image() == None %}
+                                    <img src="../static/empty.jpg" class="responsive">
+                                {% else %}
+                                    <img src="data:'image/jpg';base64,{{ follower.get_image() }}" class="responsive">
+                                {% endif %}
+                                <div>
+                                    <p onclick="location.href='{{ url_for('user', username=follower.username) }}';"> {{ follower.username }} </p>
+                                    <p class='write-to-friend'
+                                       onclick="location.href='{{ url_for('write_message', username=follower.username) }}';">
+                                        <button type="button" class="btn btn-light">Написать</button>
+                                    </p>
+                                </div>
+                            </div>
+                            <h3 class='friend-more-options'
+                                onclick="location.href='{{ url_for('unfollow', username=follower.username) }}';">
+                                <button type="button" class="btn btn-secondary">Delete</button>
+                            </h3>
+                        </div>
+                    {% endfor %}
+                    {% for follower in followed %}
+                        <div class='friend-inf-container'>
+                            <div class='friend-inf'>
+                                {% if follower.get_image() == None %}
+                                    <img src="../static/empty.jpg" class="responsive">
+                                {% else %}
+                                    <img src="data:'image/jpg';base64,{{ follower.get_image() }}" class="responsive">
+                                {% endif %}
+                                <div>
+                                    <p onclick="location.href='{{ url_for('user', username=follower.username) }}';"> {{ follower.username }} </p>
+                                    <p class='write-to-friend'
+                                       onclick="location.href='{{ url_for('write_message', username=follower.username) }}';">
+                                        <button type="button" class="btn btn-light">Написать</button>
+                                    </p>
+                                </div>
+                            </div>
+                            <h3 class='friend-more-options'
+                                onclick="location.href='{{ url_for('unfollow', username=follower.username) }}';">
+                                <button type="button" class="btn btn-secondary">Delete</button>
+                            </h3>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

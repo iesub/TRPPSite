@@ -3,103 +3,112 @@
 {% block content %}
     <div class="container">
         <div class="row justify-content-center">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class='main-part'>
-                        <div class="client-inf">
-                            <div class="avatar-change">
-                                {% if user.get_image() == None %}
-                                    <img src="../static/empty.jpg" class="responsive">
-                                {% else %}
-                                    <img src="data:'image/jpg';base64,{{ user.get_image() }}" class="responsive">
-                                {% endif %}
-                                {% if user == current_user %}
-                                    <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
-                                        <p><input type="file" name="file" class="form-control-file" id="exampleFormControlFile1"></p>
-                                        <p> <button type="submit" class="btn btn-light">Сменить аватар</button></p>
-                                    </form>
-                                {% endif %}
+            <div class='main-part'>
 
-                            </div>
-
-                            <div class="information-block">
-                                <h3>{{ user.username }}</h3>
-                                <p>Основная информация</p>
-                                {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
-                                {% if user.last_seen %}
-                                    <p>В последний раз был онлайн: {{ user.last_seen.strftime('%H:%M %d/%m') }}</p>
-                                {% endif %}
-                                {% if user == current_user %}
-                                    <p><a href="{{ url_for('edit_profile') }}">Изменить ваш профиль</a></p>
-                                {% elif not (current_user.is_following(user) or user.is_following(current_user)) %}
-                                    <p><a href="{{ url_for('follow', username=user.username) }}">Добавить в друзья</a>
-                                    </p>
-                                    <p><a href="{{ url_for('write_message', username=user.username) }}">Написать
-                                        сообщение</a></p>
-                                {% else %}
-                                    <p><a href="{{ url_for('unfollow', username=user.username) }}">Удалить из списка
-                                        друзей</a></p>
-                                    <p><a href="{{ url_for('write_message', username=user.username) }}">Написать
-                                        сообщение</a></p>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="row">
-                <div class="col-lg-5 col-md-12 col-sm-12">
-                    <div class='client-news'>
-                        {% if user==current_user %}
-                            <p><button type="submit" class="btn btn-light" ><a href="{{ url_for('create_news') }}">Опубликовать новость</a></button></p>
-
+                <div class="client-inf col-lg-8 col-md-8 col-sm-8">
+                    <div class="avatar-change">
+                        {% if user.get_image() == None %}
+                            <img src="../static/empty.jpg" class="responsive">
+                        {% else %}
+                            <img src="data:'image/jpg';base64,{{ user.get_image() }}" class="responsive">
                         {% endif %}
-                        {% for news_item in news %}
-                            <div class='note'>
-                                <p> {{ news_item.text }} </p>
-                                <div class="note-img-box">
-                                    {% if news_item.get_image() == None %}
-                                        <img src="../static/empty.jpg" class="responsive">
-                                    {% else %}
-                                        <img src="data:'image/jpg';base64,{{ news_item.get_image() }}"
-                                             class="responsive">
-                                    {% endif %}
-                                </div>
-                                <p class="toolbar">
-                                    <label class="comment">
-                                <form action="{{ url_for('comment', username=user.username, news_id=news_item.id) }}"
-                                      method="POST" enctype="multipart/form-data">
-                                    <p><input type="text" name="comment" placeholder="Написать комментарий"></p>
-                                <p><button type="submit" class="btn btn-light" >Опубликовать комментарий</button></p>
-                                </form>
-                                </label>
+                        {% if user == current_user %}
+                            <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+                                <p><input type="file" name="file" class="form-control-file"
+                                          id="exampleFormControlFile1"></p>
+                                <p>
+                                    <button type="submit" class="btn btn-light">Сменить аватар</button>
                                 </p>
-                                <div class='comment-container'>
-                                    {% for comment in news_item. comments %}
-                                        <div class='comment-block'>
-                                            <div class='comment-user-inf'>
-                                                {% if comment.author.get_image() == None %}
-                                                    <img src="../static/empty.jpg" max-width="36" class="responsive">
-                                                {% else %}
-                                                    <img src="data:'image/jpg';base64,{{ comment.author.get_image() }}"  max-width="36" class="responsive">
-                                                {% endif %}
-                                            </div>
-                                            <div class='comment-text'>
-                                                <p class='commentator-name'> {{ comment.author.username }} </p>
-                                                <p class='comment-text'> {{ comment.body }} </p>
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        {% endfor %}
+                            </form>
+                        {% endif %}
+
+                    </div>
+
+                    <div class="information-block col-lg-4 col-md-4 col-sm-4">
+                        <h3>{{ user.username }}</h3>
+                        <p>Основная информация</p>
+                        {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+                        {% if user.last_seen %}
+                            <p>В последний раз был онлайн: {{ user.last_seen.strftime('%H:%M %d/%m') }}</p>
+                        {% endif %}
+                        {% if user == current_user %}
+                            <p><a href="{{ url_for('edit_profile') }}">Изменить ваш профиль</a></p>
+                        {% elif not (current_user.is_following(user) or user.is_following(current_user)) %}
+                            <p><a href="{{ url_for('follow', username=user.username) }}">Добавить в друзья</a>
+                            </p>
+                            <p><a href="{{ url_for('write_message', username=user.username) }}">Написать
+                                сообщение</a></p>
+                        {% else %}
+                            <p><a href="{{ url_for('unfollow', username=user.username) }}">Удалить из списка
+                                друзей</a></p>
+                            <p><a href="{{ url_for('write_message', username=user.username) }}">Написать
+                                сообщение</a></p>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class = "container">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-5 col-md-12 col-sm-12">
+            <div class='client-news'>
+                {% if user==current_user %}
+                    <p>
+                        <button type="submit" class="btn btn-light"><a href="{{ url_for('create_news') }}">Опубликовать
+                            новость</a></button>
+                    </p>
+
+                {% endif %}
+                {% for news_item in news %}
+                    <div class='note'>
+                        <p> {{ news_item.text }} </p>
+                        <div class="note-img-box">
+                            {% if news_item.get_image() == None %}
+                                <img src="../static/empty.jpg" class="responsive">
+                            {% else %}
+                                <img src="data:'image/jpg';base64,{{ news_item.get_image() }}"
+                                     class="responsive">
+                            {% endif %}
+                        </div>
+                        <p class="toolbar">
+                            <label class="comment">
+                        <form action="{{ url_for('comment', username=user.username, news_id=news_item.id) }}"
+                              method="POST" enctype="multipart/form-data">
+                            <p><input type="text" name="comment" placeholder="Написать комментарий"></p>
+                            <p>
+                                <button type="submit" class="btn btn-light">Опубликовать комментарий</button>
+                            </p>
+                        </form>
+                        </label>
+                        </p>
+                        <div class='comment-container'>
+                            {% for comment in news_item. comments %}
+                                <div class='comment-block'>
+                                    <div class='comment-user-inf'>
+                                        {% if comment.author.get_image() == None %}
+                                            <img src="../static/empty.jpg" max-width="36" class="responsive">
+                                        {% else %}
+                                            <img src="data:'image/jpg';base64,{{ comment.author.get_image() }}"
+                                                 max-width="36px" class="responsive">
+                                        {% endif %}
+                                    </div>
+                                    <div class='comment-text'>
+                                        <p class='commentator-name'> {{ comment.author.username }} </p>
+                                        <p class='comment-text'> {{ comment.body }} </p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    </div>
+
 
 
 

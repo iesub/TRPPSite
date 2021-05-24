@@ -188,7 +188,7 @@ label #sidebar_btn:hover{
   }
 
   .content{
-    margin-left: 0;
+    margin-left: 30px;
     margin-top: 0;
     padding: 10px 20px;
     transition: 0s;
