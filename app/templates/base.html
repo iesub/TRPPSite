@@ -104,7 +104,7 @@
                     <a href="{{ url_for('logout') }}" class="logout_btn"><h4>Выйти</h4></a>
 
                 {% endif %}
-
+                </div>
 
             {% endif %}
     </div>
@@ -142,14 +142,13 @@
                     <h3>{{ current_user.username }}</h3>
                 </div>
             </div>
-
+        {% endif %}
     </div>
     <a href="{{ url_for('index') }}"><i class="fas fa-envelope"></i><span>Чаты</span></a>
     {% if not current_user.is_anonymous %}
         <a href="{{ url_for('user', username=current_user.username) }}"><i
                 class="fas fa-user"></i><span>Профиль</span></a>
     {% endif %}
-{% endif %}
     <a href="{{ url_for('list_of_friends') }}"><i class="fas fa-user-friends"></i><span>Список друзей</span></a>
     <a href="{{ url_for('news') }}"><i class="fas fa-th"></i><span>Обновления друзей</span></a>
 </div>

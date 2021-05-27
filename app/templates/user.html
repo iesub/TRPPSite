@@ -6,11 +6,12 @@
             <div class='main-part'>
 
                 <div class="client-inf col-lg-8 col-md-8 col-sm-8">
-                    <div class="avatar-change">
+                    <div class="avatar-change" >
+                    <div class="responsive">
                         {% if user.get_image() == None %}
-                            <img src="../static/empty.jpg" class="responsive">
+                            <img src="../static/empty.jpg" max-width="256px">
                         {% else %}
-                            <img src="data:'image/jpg';base64,{{ user.get_image() }}" class="responsive">
+                            <img src="data:'image/jpg';base64,{{ user.get_image() }}" max-width="256px" >
                         {% endif %}
                         {% if user == current_user %}
                             <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
@@ -21,7 +22,7 @@
                                 </p>
                             </form>
                         {% endif %}
-
+                    </div>
                     </div>
 
                     <div class="information-block col-lg-4 col-md-4 col-sm-4">
@@ -77,9 +78,9 @@
                                 <label class="comment">
                                     <form action="{{ url_for('comment', username=user.username, news_id=news_item.id) }}"
                                           method="POST" enctype="multipart/form-data">
-                                        <p><input disabled style="width:100%"  type="text" name="comment" placeholder="Написать комментарий"></p>
+                                        <p><input type="text" class="form-control" name="comment" placeholder="Написать комментарий"></p>
                                         <p>
-                                            <button type="submit" class="btn btn-light">Опубликовать комментарий
+                                            <button type="submit" class="form-control" class="btn btn-light">Опубликовать комментарий
                                             </button>
                                         </p>
                                     </form>

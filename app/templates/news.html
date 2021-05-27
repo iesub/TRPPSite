@@ -27,8 +27,8 @@
                         <label class = "comment">
                             <form action="{{ url_for('comment_from_news', username=news_item.author.username, news_id=news_item.id) }}" method="POST" enctype="multipart/form-data">
 
-                                <p><input disabled style="width:42%" type="text" name="comment" placeholder="Написать комментарий"></p>
-                                <p><button type="submit" class="btn btn-light" >Опубликовать комментарий</button></p>
+                                <p><input  type="text" class="form-control" name="comment" placeholder="Написать комментарий"></p>
+                                <p><button type="submit"  class="btn btn-light" >Опубликовать комментарий</button></p>
 
                             </form>
                         </label>
