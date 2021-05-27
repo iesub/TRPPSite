@@ -96,7 +96,7 @@
                 <p><label>
                     <textarea disabled style="width:100%" cols="30" name="text"></textarea>
                 </label></p>
-                    <p><input type="submit" value="отправить"></p>
+                    <p><input disabled style="width:50%" type="submit" value="отправить"></p>
             </form>
             {% if prev_url %}
                 <a href="{{ prev_url }}">предыдущие сообщения</a>
@@ -112,8 +112,8 @@
             {% if chat.name.find('none') == -1 %}
                 <h5 class="card-title"><a href="{{ url_for('invite_user', chat_id=chat.id) }}">Пригласить нового пользователя в беседу</a></h5>
                 <form action="{{ url_for('upload_chat_image', chat_id=chat.id) }}" method="POST" enctype="multipart/form-data">
-                    <p><input type="file" name="file"></p>
-                    <p><input type="submit" value="Сменить изображение чата"></p>
+                    <p><input disabled style="width:100%" type="file" name="file"></p>
+                    <p><input disabled style="width:100%" type="submit" value="Сменить изображение чата"></p>
                 </form>
             {% endif %}
             {% for user in chat.users %}

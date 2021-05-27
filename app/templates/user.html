@@ -14,7 +14,7 @@
                         {% endif %}
                         {% if user == current_user %}
                             <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
-                                <p><input type="file" name="file" class="form-control-file"
+                                <p><input  type="file" name="file" class="form-control-file"
                                           id="exampleFormControlFile1"></p>
                                 <p>
                                     <button type="submit" class="btn btn-light">Сменить аватар</button>
