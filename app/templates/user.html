@@ -49,64 +49,66 @@
             </div>
         </div>
     </div>
-    <div class = "container">
+    <div class="container">
 
-    <div class="row justify-content-center">
+        <div class="row justify-content-center">
 
-        <div class="col-lg-5 col-md-12 col-sm-12">
-            <div class='client-news'>
-                {% if user==current_user %}
-                    <p>
-                        <button type="submit" class="btn btn-light"><a href="{{ url_for('create_news') }}">Опубликовать
-                            новость</a></button>
-                    </p>
-
-                {% endif %}
-                {% for news_item in news %}
-                    <div class='note'>
-                        <p> {{ news_item.text }} </p>
-                        <div class="note-img-box">
-                            {% if news_item.get_image() == None %}
-                                <img src="../static/empty.jpg" class="responsive">
-                            {% else %}
-                                <img src="data:'image/jpg';base64,{{ news_item.get_image() }}"
-                                     class="responsive">
-                            {% endif %}
-                        </div>
-                        <p class="toolbar">
-                            <label class="comment">
-                        <form action="{{ url_for('comment', username=user.username, news_id=news_item.id) }}"
-                              method="POST" enctype="multipart/form-data">
-                            <p><input type="text" name="comment" placeholder="Написать комментарий"></p>
-                            <p>
-                                <button type="submit" class="btn btn-light">Опубликовать комментарий</button>
-                            </p>
-                        </form>
-                        </label>
+            <div class="col-lg-5 col-md-12 col-sm-12">
+                <div class='client-news'>
+                    {% if user==current_user %}
+                        <p>
+                            <button type="submit" class="btn btn-light"><a href="{{ url_for('create_news') }}">Опубликовать
+                                новость</a></button>
                         </p>
-                        <div class='comment-container'>
-                            {% for comment in news_item. comments %}
-                                <div class='comment-block'>
-                                    <div class='comment-user-inf'>
-                                        {% if comment.author.get_image() == None %}
-                                            <img src="../static/empty.jpg" max-width="36" class="responsive">
-                                        {% else %}
-                                            <img src="data:'image/jpg';base64,{{ comment.author.get_image() }}"
-                                                 max-width="36px" class="responsive">
-                                        {% endif %}
+
+                    {% endif %}
+                    {% for news_item in news %}
+                        <div class='note'>
+                            <p> {{ news_item.text }} </p>
+                            <div class="note-img-box">
+                                {% if news_item.get_image() == None %}
+                                    <img src="../static/empty.jpg" class="responsive">
+                                {% else %}
+                                    <img src="data:'image/jpg';base64,{{ news_item.get_image() }}" class="responsive">
+                                {% endif %}
+                            </div>
+                            <p class="toolbar">
+                            <div class="container">
+                                <label class="comment">
+                                    <form action="{{ url_for('comment', username=user.username, news_id=news_item.id) }}"
+                                          method="POST" enctype="multipart/form-data">
+                                        <p><input type="text" name="comment" placeholder="Написать комментарий"></p>
+                                        <p>
+                                            <button type="submit" class="btn btn-light">Опубликовать комментарий
+                                            </button>
+                                        </p>
+                                    </form>
+                                </label>
+                            </div>
+                            </p>
+                            <div class='comment-container'>
+                                {% for comment in news_item. comments %}
+                                    <div class='comment-block'>
+                                        <div class='comment-user-inf'>
+                                            {% if comment.author.get_image() == None %}
+                                                <img src="../static/empty.jpg" max-width="36" class="responsive">
+                                            {% else %}
+                                                <img src="data:'image/jpg';base64,{{ comment.author.get_image() }}"
+                                                     max-width="36px" class="responsive">
+                                            {% endif %}
+                                        </div>
+                                        <div class='comment-text'>
+                                            <p class='commentator-name'> {{ comment.author.username }} </p>
+                                            <p class='comment-text'> {{ comment.body }} </p>
+                                        </div>
                                     </div>
-                                    <div class='comment-text'>
-                                        <p class='commentator-name'> {{ comment.author.username }} </p>
-                                        <p class='comment-text'> {{ comment.body }} </p>
-                                    </div>
-                                </div>
-                            {% endfor %}
+                                {% endfor %}
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
-    </div>
     </div>
 
 
