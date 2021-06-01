@@ -119,9 +119,9 @@
 
         {% if not current_user.is_anonymous %}
             <a href="{{ url_for('user', username=current_user.username) }}"><i
-                    class="fas fa-paper-plane"></i><span>Профиль</span></a>
-            <a href="{{ url_for('index') }}"><i class="fas fa-paper-plane"></i><span>Чаты</span></a>
-            <a href="{{ url_for('list_of_friends') }}"><i class="fas fa-paper-plane"></i><span>Список друзей</span></a>
+                    class="fas fa-user"></i><span>Профиль</span></a>
+            <a href="{{ url_for('index') }}"><i class="fas fa-envelope"></i><span>Чаты</span></a>
+            <a href="{{ url_for('list_of_friends') }}"><i class="fas fa-user-friends"></i><span>Список друзей</span></a>
             <a href="{{ url_for('news') }}"><i class="fas fa-th"></i><span>Обновления друзей</span></a>
         {% endif %}
 
