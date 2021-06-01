@@ -1,31 +1,35 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
     <div class = 'main-part'>
         {% for news_item in news %}
             <div class = 'note'>
                 <div class = "news-origin">
                     {% if news_item.author.get_image() == None %}
-                        <img src="../static/empty.jpg" width="36" height="36">
+                        <img src="../static/empty.jpg" max-width="36" class="responsive">
                     {% else %}
-                        <img src="data:'image/jpg';base64,{{ news_item.author.get_image() }}" width="36" height="36">
+                        <img src="data:'image/jpg';base64,{{ news_item.author.get_image() }}" max-width="36" class="responsive">
                     {% endif %}
                     <p class = "news-creator">{{ news_item.author.username }}</p>
                 </div>
                 <p> {{news_item.text }} </p>
                 <div class = "note-img-box">
                     {% if news_item.get_image() == None %}
-                        <img src="../static/empty.jpg" width="256" height="256">
+                        <img src="../static/empty.jpg" max-width="256" class="responsive">
                     {% else %}
-                        <img src="data:'image/jpg';base64,{{ news_item.get_image() }}" width="256" height="256">
+                        <img src="data:'image/jpg';base64,{{ news_item.get_image() }}" max-width="256" class="responsive">
                     {% endif %}
                 </div>
                 <p class = "toolbar">
                     <label class = "comment">
                         <label class = "comment">
                             <form action="{{ url_for('comment_from_news', username=news_item.author.username, news_id=news_item.id) }}" method="POST" enctype="multipart/form-data">
-                                <p><input type="text" name="comment">Написать комментарий</p>
-                                <p><input type="submit" value="опублековать комментарий"></p>
+
+                                <p><input  type="text" class="form-control" name="comment" placeholder="Написать комментарий"></p>
+                                <p><button type="submit"  class="btn btn-light" >Опубликовать комментарий</button></p>
+
                             </form>
                         </label>
                     </label>
@@ -35,9 +39,9 @@
                         <div class = 'comment-block'>
                             <div class = 'comment-user-inf'>
                                 {% if comment.author.get_image() == None %}
-                                    <img src="../static/empty.jpg" width="36" height="36">
+                                    <img src="../static/empty.jpg" max-width="36" class="responsive">
                                 {% else %}
-                                    <img src="data:'image/jpg';base64,{{ comment.author.get_image() }}" width="36" height="36">
+                                    <img src="data:'image/jpg';base64,{{ comment.author.get_image() }}" max-width="36" class="responsive">
                                 {% endif %}
                             </div>
                             <div class = 'comment-text'>
@@ -49,5 +53,7 @@
                 </div>
             </div>
         {% endfor %}
+    </div>
+        </div>
     </div>
 {% endblock %}

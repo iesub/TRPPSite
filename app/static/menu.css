@@ -9,7 +9,7 @@ body{
 header{
   z-index: 1;
   position: fixed;
-  background: #8ea6b2;
+  background: #e70009/*#8ea6b2*/;
   padding: 20px;
   width: calc(100% - 0%);
   top: 0;
@@ -37,27 +37,31 @@ header{
 
 .logout_btn{
   padding: 5px;
-  background: #f7f8fa;
+  background: #e70009/*#f7f8fa*/;
   text-decoration: none;
   float: right;
   margin-top: 3px;
   margin-right: 50px;
+  margin-top: -33px;
   border-radius: 2px;
   font-size: 10px;
   font-weight: 600;
-  color: #fff;
   transition: 0.5s;
   transition-property: background;
 }
 
+.logout_btn h4{
+  color: white;
+}
+
 .logout_btn:hover{
-  background: #f7f8fa;
+  background: #e70009/*#f7f8fa*/;
 }
 
 .sidebar{
   z-index: 1;
   top: 0;
-  background: #8ea6b2;
+  background: #e70009/*#8ea6b2*/;
   margin-top: 70px;
   padding-top: 30px;
   position: fixed;
@@ -75,7 +79,14 @@ header{
   justify-content: center;
   align-items: center;
 }
+/*.user-information{
+  margin-left: 1100px;
+}*/
+.user-information h3{
+  color: white;
+}
 
+}
 .sidebar .profile_info .profile_image{
   width: 100px;
   height: 100px;
@@ -165,7 +176,7 @@ label #sidebar_btn:hover{
 
 .mobile_nav{
   display: none;
-  background-color: #8ea6b2;
+  background-color: #e70009/*#8ea6b2*/;
 }
 
 .content .card p{
@@ -188,7 +199,7 @@ label #sidebar_btn:hover{
   }
 
   .content{
-    margin-left: 0;
+    margin-left: 30px;
     margin-top: 0;
     padding: 10px 20px;
     transition: 0s;
@@ -204,7 +215,7 @@ label #sidebar_btn:hover{
   }
 
   .nav_bar{
-    background: #8ea6b2;
+    background: #e70009/*#8ea6b2*/;
     width:calc(100% - 0px);
     margin-top: 70px;
     display: flex;
@@ -232,7 +243,7 @@ label #sidebar_btn:hover{
   }
 
   .mobile_nav_items{
-    background: #8ea6b2;
+    background: #e70009/*#8ea6b2*/;
     display: none;
   }
 

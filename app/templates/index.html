@@ -2,9 +2,10 @@
 
 {% block content %}
 
-    <div class="row">
-        <div class="col-lg-9 col-md-9 col-sm-9">
-            <div class='main-part'>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class='main-part '>
+
                 <h1>Привет, {{ current_user.username }}!</h1>
                 <h2>Ваши чаты:</h2>
                 <form action="" method="post" novalidate>
@@ -29,24 +30,27 @@
                              onclick="location.href = '{{ url_for('chat', chat_id=chat.id) }}';">
                             <div class="chat-image">
                                 {% if chat.name.find('none') == -1 %}
-                            {% if chat.get_image() == None %}
-                                <img src="../static/empty.jpg">
-                            {% else %}
-                                <img src="data:'image/jpg';base64,{{ chat.get_image() }}">
-                            {% endif %}
-                        {% elif chat.users[0] == current_user %}
-                            {% if chat.users[1].get_image() == None %}
-                                <img src="../static/empty.jpg">
-                            {% else %}
-                                <img src="data:'image/jpg';base64,{{ chat.users[1].get_image() }}">
-                            {% endif %}
-                        {% else %}
-                            {% if chat.users[0].get_image() == None %}
-                                <img src="../static/empty.jpg">
-                            {% else %}
-                                <img src="data:'image/jpg';base64,{{ chat.users[0].get_image() }}">
-                            {% endif %}
-                        {% endif %}
+                                    {% if chat.get_image() == None %}
+                                        <img src="../static/empty.jpg" class="responsive">
+                                    {% else %}
+                                        <img src="data:'image/jpg';base64,{{ chat.get_image() }}"
+                                             class="responsive">
+                                    {% endif %}
+                                {% elif chat.users[0] == current_user %}
+                                    {% if chat.users[1].get_image() == None %}
+                                        <img src="../static/empty.jpg" class="responsive">
+                                    {% else %}
+                                        <img src="data:'image/jpg';base64,{{ chat.users[1].get_image() }}"
+                                             class="responsive">
+                                    {% endif %}
+                                {% else %}
+                                    {% if chat.users[0].get_image() == None %}
+                                        <img src="../static/empty.jpg" class="responsive">
+                                    {% else %}
+                                        <img src="data:'image/jpg';base64,{{ chat.users[0].get_image() }}"
+                                             class="responsive">
+                                    {% endif %}
+                                {% endif %}
                             </div>
                             <div class="chat-inf">
                                 <div class="chat-name">
@@ -67,33 +71,30 @@
                     {% endfor %}
                 </div>
             </div>
-            </div>
+            <div class="notification-block">
+                {% if count > 0 %}
+                    <div class="card text-black bg-light mb-3">
+                        <div class="card-header">Напоминание</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Вас приглашают в следующие чаты:</h5>
+                            {% for invitation in invitations %}
+                                <div class="not-block">
+                                <p>{{ invitation.chat.name }}</p>
+                                <p class="card-text"><a
+                                        href="{{ url_for('accept_the_invitation', invitation_id=invitation.id) }}">Принять
+                                    приглашение</a></p>
+                                <p class="card-text"><a
+                                        href="{{ url_for('decline_the_invitation', invitation_id=invitation.id) }}">Отклонить
+                                    приглашение</a></p>
 
-
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <div class="notification-block">
-                    {% if count > 0 %}
-                        <div class="card text-black bg-light mb-3">
-                            <div class="card-header">Напоминание</div>
-                            <div class="card-body">
-                                <h5 class="card-title">Вас приглашают в следующие чаты:</h5>
-                                {% for invitation in invitations %}
-                                    <div class="not-block">
-                                        <p>{{ invitation.chat.name }}</p>
-                                        <p class="card-text"><a
-                                                href="{{ url_for('accept_the_invitation', invitation_id=invitation.id) }}">Принять
-                                            приглашение</a></p>
-                                        <p class="card-text"><a
-                                            href="{{ url_for('decline_the_invitation', invitation_id=invitation.id) }}">Отклонить
-                                        приглашение</a></p>
-                                    </div>
-                                    </div>
-                                    </div>
-
-
-                                {% endfor %}
-                    {% endif %}
-                </div>
+                                </div>
+                            {% endfor %}
+                            </div>
+                        </div>
+                {% endif %}
             </div>
         </div>
+    </div>
+
+
 {% endblock %}

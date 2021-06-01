@@ -7,6 +7,7 @@
     {% endif %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="../static/GOP_Square.svg">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <link rel="stylesheet" href="../static/autorization.css" type="text/css"/>
@@ -51,93 +52,111 @@
             text-decoration: underline;
             color: black;
         }
+
+        textarea {
+            resize: both;
+        }
     </style>
 </head>
 <body>
-    <input type="checkbox" id="check">
-    <!--header area start-->
-    <header>
-        <label for="check">
+<input type="checkbox" id="check">
+<!--header area start-->
+<header>
+    <div class="raw">
+
+        <!--<label for="check">
             <i class="fas fa-bars" id="sidebar_btn"></i>
         </label>
+        -->
 
+        <div class="left_area">
             <div class="name-logo">
                 <div>
-                    <img src="../static/empty.jpg"/> <!-- Лого сайта -->
+                    <img src="../static/GOP_Square.svg" class="responsive"/> <!-- Лого сайта -->
+                </div>
+                <h3>Trump<span>Mate</span>O</h3>
+                <label for="check">
+                    <i class="fas fa-bars" id="sidebar_btn"></i>
+                </label>
+            </div>
+        </div>
+
+
+        <div class="user-information">
+            {% if current_user.is_authenticated %}
+
+
+                {#                         onclick="location.href='{{ url_for('user', username=current_user.username) }}';">#}
+                {#                        <div>#}
+                {#                            <h3>{{ current_user.username }}</h3>#}
+                {#                        </div>#}
+                {#                        <div>#}
+                {#                            {% if current_user.get_image() == None %}#}
+                {#                                <img src="../static/empty.jpg" class="responsive">#}
+                {#                            {% else %}#}
+                {#                                <img src="data:'image/jpg';base64,{{ current_user.get_image() }}" class="responsive">#}
+                {#                            {% endif %}#}
+                {#                        </div>#}
+
+                {% if current_user.is_anonymous %}
+                    <a href="{{ url_for('login') }}" class="logout_btn"><h4>Войти</h4></a>
+                {% else %}
+                    <a href="{{ url_for('logout') }}" class="logout_btn"><h4>Выйти</h4></a>
+
+                {% endif %}
                 </div>
 
-            <div class="left_area">
-                <h3>Site<span>Name</span></h3>
-            </div>
-
-            <div class="right_area">
-
-
-                {% if current_user.is_authenticated %}
-                    <div class="user-information"
-                         onclick="location.href='{{ url_for('user', username=current_user.username) }}';">
-                        <div>
-                            <h3>{{ current_user.username }}</h3>
-                        </div>
-                        <div>
-                            {% if current_user.get_image() == None %}
-                                <img src="../static/empty.jpg">
-                            {% else %}
-                                <img src="data:'image/jpg';base64,{{ current_user.get_image() }}">
-                            {% endif %}
-                        </div>
-                        <div>
-                            {% if current_user.is_anonymous %}
-                                <a href="{{ url_for('login') }}" class="logout_btn"><h3>Войти</h3></a>
-                            {% else %}
-                                <a href="{{ url_for('logout') }}" class="logout_btn"><h3>Выйти</h3></a>
-                            {% endif %}
-                        </div>
-
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-    </header>
-    <!--header area end-->
-    <!--mobile navigation bar start-->
-    <div class="mobile_nav ">
-        <div class="nav_bar">
-            <i class="fa fa-bars nav_btn"></i>
-        </div>
-        <div class="mobile_nav_items">
-            <a href="{{ url_for('index') }}"><i class="fas fa-paper-plane"></i><span>Чаты</span></a>
-            {% if not current_user.is_anonymous %}
-                <a href="{{ url_for('user', username=current_user.username) }}"><i
-                    class="fas fa-paper-plane"></i><span>Профиль</span></a>
             {% endif %}
-            <a href="{{ url_for('list_of_friends') }}"><i class="fas fa-paper-plane"></i><span>Список друзей</span></a>
-            <a href="{{ url_for('news') }}"><i class="fas fa-th"></i><span>Обновления друзей</span></a>
-
-        </div>
     </div>
-    <!--mobile navigation bar end-->
-    <!--sidebar start-->
-    <div class="sidebar">
-        <div class="profile_info">
-            {% if current_user.is_authenticated %}
-                {% if current_user.get_image() == None %}
-                    <img src="../static/empty.jpg">
-                {% else %}
-                    <img src="data:'image/jpg';base64,{{ current_user.get_image() }}">
-                {% endif %}
-                <h4>{{ current_user.username }}</h4>
-            {% endif %}
-        </div>
-        <a href="{{ url_for('index') }}"><i class="fas fa-paper-plane"></i><span>Чаты</span></a>
+</header>
+<!--header area end-->
+<!--mobile navigation bar start-->
+<div class="mobile_nav ">
+    <div class="nav_bar">
+        <i class="fa fa-bars nav_btn"></i>
+    </div>
+    <div class="mobile_nav_items">
+
         {% if not current_user.is_anonymous %}
             <a href="{{ url_for('user', username=current_user.username) }}"><i
-                class="fas fa-paper-plane"></i><span>Профиль</span></a>
+                    class="fas fa-user"></i><span>Профиль</span></a>
+            <a href="{{ url_for('index') }}"><i class="fas fa-envelope"></i><span>Чаты</span></a>
+            <a href="{{ url_for('list_of_friends') }}"><i class="fas fa-user-friends"></i><span>Список друзей</span></a>
+            <a href="{{ url_for('news') }}"><i class="fas fa-th"></i><span>Обновления друзей</span></a>
         {% endif %}
-        <a href="{{ url_for('list_of_friends') }}"><i class="fas fa-paper-plane"></i><span>Список друзей</span></a>
-        <a href="{{ url_for('news') }}"><i class="fas fa-th"></i><span>Обновления друзей</span></a>
+
+
     </div>
-    <!--sidebar end-->
+</div>
+<!--mobile navigation bar end-->
+<!--sidebar start-->
+<div class="sidebar">
+    <div class="profile_info">
+        {% if current_user.is_authenticated %}
+            {% if current_user.get_image() == None %}
+                <img src="../static/empty.jpg" class="responsive">
+            {% else %}
+                <img src="data:'image/jpg';base64,{{ current_user.get_image() }}" class="responsive">
+            {% endif %}
+            <div class="user-information"
+                 onclick="location.href='{{ url_for('user', username=current_user.username) }}';">
+                <div>
+                    <h3>{{ current_user.username }}</h3>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if not current_user.is_anonymous %}
+        <a href="{{ url_for('user', username=current_user.username) }}"><i
+                class="fas fa-user"></i><span>Профиль</span></a>
+        <a href="{{ url_for('index') }}"><i class="fas fa-envelope"></i><span>Чаты</span></a>
+        <a href="{{ url_for('list_of_friends') }}"><i class="fas fa-user-friends"></i><span>Список друзей</span></a>
+        <a href="{{ url_for('news') }}"><i class="fas fa-th"></i><span>Обновления друзей</span></a>
+    {% endif %}
+
+</div>
+<!--sidebar end-->
 
 {#<header class="first_color">#}
 {#    <div class="name-logo">#}
@@ -168,7 +187,7 @@
 {#    {% endif %}#}
 {#</header>#}
 
-    <div class="content">
+<div class="content">
     {##}
     {#            <div class="site-nav">#}
     {##}
@@ -179,15 +198,15 @@
     {#                <a href="{{ url_for('list_of_friends') }}">Список друзей</a>#}
     {#                <a href="{{ url_for('news') }}"> Обновления друзей </a>#}
     {#            </div>#}
-        {% block content %}{% endblock %}
-    </div>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.nav_btn').click(function () {
-                $('.mobile_nav_items').toggleClass('active');
-            });
+    {% block content %}{% endblock %}
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.nav_btn').click(function () {
+            $('.mobile_nav_items').toggleClass('active');
         });
-    </script>
+    });
+</script>
 
 </body>
 </html>

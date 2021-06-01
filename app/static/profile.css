@@ -13,8 +13,13 @@
 }
 
 .avatar-change img{
-	height:200px;
+	max-width: 256px;
+
+	height: auto;
+	margin-bottom: 10px;
 }
+	/*height:200px;*/
+
 
 .avatar-change p{
 	border: 2px solid black;
@@ -24,7 +29,7 @@
 }
 
 .avatar-change p:hover{
-	background-color: #c3ccd3;
+	background-color: #fff;
 }
 
 .information-block{
